@@ -1,12 +1,12 @@
 import styles from "./page.module.css";
 import Nav from "@/app/sections/Nav/Nav";
-import Krutorus from "@/app/sections/KrutorusAndCalc/Krutorus/Krutorus";
+import KrutorusAndCalc from "@/app/sections/KrutorusAndCalc/KrutorusAndCalc";
 
 export default function Home() {
     return (
         <div className={styles.page}>
             <Nav/>
-            <Krutorus/>
+            <KrutorusAndCalc/>
         </div>
     );
 }

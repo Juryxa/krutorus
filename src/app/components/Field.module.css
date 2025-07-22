@@ -1,0 +1,22 @@
+.field {
+    padding: 10px 40px;
+    letter-spacing: 0;
+    line-height: 100%;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 15px;
+    font-weight: 400;
+    height: 38px;
+    outline: none;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.orange{
+    background-color: #F4871A;
+}
+.gray{
+    background-color: #9C9C9C;
+}

@@ -1,0 +1,53 @@
+.krutorusTop{
+    position: relative;
+    border-radius: 50px;
+    background-image: url("public/krutorusTopBg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 200px;
+    color: white;
+    height: 100%;
+}
+.krutorusTop:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 2;
+    border-radius: 50px;
+}
+.inner {
+    position: relative;
+    padding: 40px 40px 60px 40px;
+    z-index: 3;
+    display: inline-flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.title{
+    font-size: 61px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+@counter-style lines {
+    system: fixed;
+    symbols: — — —;
+    suffix: " ";
+}
+
+.list {
+    list-style: lines;
+    margin-bottom: 30px;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+}
+.repair, .building, .projectsDev{
+    display: flex;
+    gap: 10px;
+    margin: 10px 10px 5px -20px;
+}
