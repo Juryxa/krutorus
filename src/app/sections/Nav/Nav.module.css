@@ -1,0 +1,16 @@
+.nav{
+    position: fixed;
+    width: 1440px;
+    height: 80px;
+    border-radius: 50px;
+    margin: 50px 240px;
+    background: #9C9C9C;
+    padding: 10px;
+}
+.buttons{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin: 10px auto 10px 40px;
+    gap: 15px;
+}
