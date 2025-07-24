@@ -1,0 +1,58 @@
+.completed {
+    position: relative;
+    overflow: visible; /* Изменено с hidden на visible */
+    width: 100%;
+    height: 250px; /* Увеличена высота для увеличенных изображений */
+    will-change: transform;
+    contain: none; /* Отключено для правильной работы трансформаций */
+    user-select: none;
+    padding: 25px 0; /* Добавлено пространство сверху/снизу */
+    box-sizing: border-box;
+}
+
+.marqueeContainer {
+    display: flex;
+    white-space: nowrap;
+    will-change: transform;
+    position: absolute;
+    top: 25px; /* Компенсируем padding контейнера */
+    left: 0;
+}
+
+.marqueeContent {
+    display: flex;
+}
+
+.imageContainer {
+    flex-shrink: 0;
+    position: relative;
+    width: 330px;
+    height: 200px;
+    margin: 0 15px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    z-index: 1;
+}
+
+.imageContainer:hover {
+    transform: scale(1.05); /* Увеличено масштабирование */
+    z-index: 10; /* Увеличен z-index для перекрытия соседей */
+}
+
+.image {
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease; /* Анимация для плавности */
+}
+
+/* Увеличиваем само изображение при наведении на контейнер */
+.imageContainer:hover .image {
+    transform: scale(1.05);
+}

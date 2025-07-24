@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ru" className={robotoFlex.className}>
-        <body>
+        <body id="__next">
         {children}
         </body>
         </html>

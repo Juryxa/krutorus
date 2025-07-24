@@ -1,0 +1,80 @@
+.krutorusBottom{
+    position: relative;
+    z-index: 2;
+    border: 2px solid #F4871A;
+    border-radius: 50px;
+    display: flex;
+    font-size: 15px;
+    font-weight: 400;
+    height: 400px;
+    width: 100%;
+    margin-top: 20px;
+}
+.images{
+    display: flex;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+}
+.man{
+    position: absolute;
+    bottom: 0;
+    left: -170px;
+}
+.cloud{
+    position: absolute;
+    top: -40px;
+    left: calc(440px - 170px);
+}
+.fieldsAndButton {
+    position: relative;
+    z-index: 5;
+    align-self: center;
+    justify-self: flex-end;
+}
+.fieldsOpacity{
+    opacity: 60%;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+.fields{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 60px;
+}
+.arrowLeft{
+    position: absolute;
+    right: 30px;
+    bottom: 50px;
+    user-select: none;
+}
+.imagestone{
+    position: relative;
+    user-select: none;
+}
+.stone1{
+    position: absolute;
+    z-index: 0;
+    bottom: -100px;
+    right: -150px;
+    filter: blur(5px);
+}
+.tgbtn{
+    margin-left: 171px;
+}
+.link{
+    color: white;
+}
+.link:hover{
+    color: #cccccc;
+}
+.link:active{
+    color: #9C9C9C;
+}
+.linkDecoration{
+    text-decoration: white underline;
+}
