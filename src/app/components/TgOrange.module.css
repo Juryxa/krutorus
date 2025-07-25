@@ -81,6 +81,9 @@
 .button:hover {
     transform: scale(1.05);
 }
+.tgImage{
+    user-select: none;
+}
 
 @keyframes pulse {
     0% {

@@ -169,10 +169,7 @@ export default function Services() {
     };
 
     return (
-        <section
-            // Добавьте этот ID
-            className={styles.services}
-        >
+        <section className={styles.services}>
             <section id="modal-root" className={styles.services}>
                 <div
                     className={`${styles.background} ${activeBg === 'bg1' ? styles.active : styles.inactive}`}

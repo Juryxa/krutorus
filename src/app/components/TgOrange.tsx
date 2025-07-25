@@ -5,92 +5,88 @@ import Image from 'next/image';
 import tgForOrange from 'public/tgForOrange.svg';
 import Link from 'next/link';
 
-const TEXTS = [
-    "Если остались вопросы - переходите в чат.",
-    "Мы на связи, сразу ответим на вопросы.",
-    "Готовы обсудить ваш проект?"
-];
+// Тексты для разных секций
+const SECTION_TEXTS: Record<string, string> = {
+    services: "Если остались вопросы - переходите в чат.",
+    plan: "Мы на связи, сразу ответим на вопросы.",
+    howwework: "Готовы обсудить ваш проект?"
+};
 
 export default function TgOrange() {
-    const [currentTextIndex, setCurrentTextIndex] = useState(0);
     const [displayText, setDisplayText] = useState('');
-    const [isDeleting, setIsDeleting] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    const servicesSectionRef = useRef<HTMLElement | null>(null);
-    const observerRef = useRef<IntersectionObserver | null>(null);
+    const [currentSection, setCurrentSection] = useState('');
     const animationRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Наблюдатель за секцией Services
+    // Наблюдатель за секциями
     useEffect(() => {
-        servicesSectionRef.current = document.getElementById('tg-section');
+        const sectionIds = ['services', 'plan', 'howwework'];
+        const sectionElements = sectionIds.map(id => document.getElementById(id));
 
-        observerRef.current = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    // Секция в поле зрения - показываем кнопку
-                    setIsVisible(true);
-                } else {
-                    // Секция ушла из поля зрения - скрываем кнопку
-                    setTimeout(() => {
-                        setIsVisible(false);
-                    }, 0);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setCurrentSection(entry.target.id);
+                        setIsVisible(true);
+                    }
+                });
 
+                // Проверяем, если все секции не видны
+                const allHidden = entries.every(entry => !entry.isIntersecting);
+                if (allHidden) {
+                    setIsVisible(false);
                 }
             },
-            {threshold: 0.1}
+            { threshold: 0.4 }
         );
 
-        if (servicesSectionRef.current) {
-            observerRef.current.observe(servicesSectionRef.current);
-        }
+        sectionElements.forEach(el => {
+            if (el) observer.observe(el);
+        });
 
         return () => {
-            if (observerRef.current && servicesSectionRef.current) {
-                observerRef.current.unobserve(servicesSectionRef.current);
-            }
-            if (animationRef.current) {
-                clearTimeout(animationRef.current);
-            }
+            sectionElements.forEach(el => {
+                if (el) observer.unobserve(el);
+            });
         };
     }, []);
 
-    // Анимация печатания текста (только когда кнопка видима)
+    // Анимация текста при смене секции
     useEffect(() => {
-        if (!isVisible) return;
+        if (!currentSection || !isVisible) return;
 
-        const currentText = TEXTS[currentTextIndex];
-        let timer: NodeJS.Timeout;
+        const targetText = SECTION_TEXTS[currentSection] || "";
+        let currentIndex = 0;
 
-        if (isDeleting) {
-            if (displayText.length > 0) {
-                timer = setTimeout(() => {
-                    setDisplayText(currentText.substring(0, displayText.length - 1));
-                }, 40);
-            } else {
-                setIsDeleting(false);
-                setCurrentTextIndex((prev) => (prev + 1) % TEXTS.length);
-            }
-        } else {
-            if (displayText.length < currentText.length) {
-                timer = setTimeout(() => {
-                    setDisplayText(currentText.substring(0, displayText.length + 1));
-                }, 80);
-            } else {
-                timer = setTimeout(() => setIsDeleting(true), 2000);
-            }
+        // Сбрасываем предыдущую анимацию
+        if (animationRef.current) {
+            clearInterval(animationRef.current);
+            setDisplayText('');
         }
 
+        // Анимация печати текста
+        animationRef.current = setInterval(() => {
+            if (currentIndex <= targetText.length) {
+                setDisplayText(targetText.substring(0, currentIndex));
+                currentIndex++;
+            } else {
+                clearInterval(animationRef.current!);
+            }
+        }, 80);
+
         return () => {
-            if (timer) clearTimeout(timer);
+            if (animationRef.current) {
+                clearInterval(animationRef.current);
+            }
         };
-    }, [isVisible, displayText, isDeleting, currentTextIndex]);
+    }, [currentSection, isVisible]);
 
     return (
         <div className={`${styles.floatingContainer} ${isVisible ? styles.visible : styles.hidden}`}>
             <div className={styles.bubble}>
                 {displayText}
-                {/* Курсор для эффекта печати */}
-                {!isDeleting && displayText.length < TEXTS[currentTextIndex].length && (
+                {displayText.length < (SECTION_TEXTS[currentSection]?.length || 0) && (
                     <span className={styles.cursor}>|</span>
                 )}
             </div>

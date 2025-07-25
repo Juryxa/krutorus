@@ -8,6 +8,9 @@
     overflow: visible;
     padding-bottom: 90px;
 }
+#modal-root{
+    background: black;
+}
 
 .background {
     position: absolute;

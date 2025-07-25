@@ -1,18 +1,67 @@
-.plan{
+.plan {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding-bottom: 70px;
+    position: relative;
+    overflow: hidden;
 }
-.cards{
+
+.cards {
     color: white;
     display: flex;
     align-items: center;
     width: 80%;
     gap: 40px;
+    position: relative;
 }
-.centralCard{
+
+/* Анимация появления элементов */
+.titleAnimation,
+.subtitleAnimation,
+.cardAnimation {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: none; /* Отключаем стандартные переходы */
+}
+
+.titleAnimation.animate,
+.subtitleAnimation.animate,
+.cardAnimation.animate {
+    animation: slideUp 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Задержки для последовательного появления */
+.titleAnimation.animate {
+    animation-delay: 0.1s;
+}
+
+.subtitleAnimation.animate {
+    animation-delay: 0.15s;
+}
+
+/* Остальные стили остаются без изменений */
+
+.h2Wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+.centralCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -21,6 +70,8 @@
     padding: 30px;
     gap: 10px;
     background-color: #888179B2;
+    position: relative;
+    z-index: 2;
 }
 .centralCard p{
     font-size: 15px;
@@ -46,7 +97,7 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-     user-select: none;
+    user-select: none;
 }
 .titleH3{
     color: #FFFFFF80;

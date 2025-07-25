@@ -3,9 +3,14 @@
 import styles from './HowWeWork.module.css';
 import Field from "@/app/components/Field";
 import AccordionUI from "@/app/components/AccordionUI";
-
+import {useInView} from 'react-intersection-observer';
 
 function HowWeWork() {
+    const { ref, inView } = useInView({
+        threshold: 0.1,
+        triggerOnce: false
+    });
+
     const sections = [
         {
             title: 'Реализация',
@@ -32,8 +37,9 @@ function HowWeWork() {
             content: `– Еженедельные отчёты\n– Личный менеджер на связи 24/7\n– Онлайн-доступ к планам и документам`
         }
     ];
+
     return (
-        <section className={styles.howWork}>
+        <section ref={ref} className={styles.howWork}>
             <div className={styles.inner}>
                 <h2 className={styles.title}>Как мы работаем?</h2>
                 <p className={styles.text}>
@@ -44,7 +50,7 @@ function HowWeWork() {
                     <Field className={'transparentOrange'}>Работаем по договору</Field>
                     <Field className={'transparentOrange'}>30 % предоплаты перед работой</Field>
                 </div>
-                <AccordionUI sections={sections} />
+                <AccordionUI sections={sections} animate={inView} />
             </div>
         </section>
     );
