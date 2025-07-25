@@ -8,7 +8,7 @@ import BuildingTypeButton from '@/app/components/BuildingTypeButton';
 import Image from 'next/image';
 import Modal from 'react-modal';
 import Field from '@/app/components/Field';
-import Completed from "@/app/sections/Services/Completed";
+import Completed from "@/app/components/Completed";
 
 export default function Services() {
     const [activeTab, setActiveTab] = useState<'repair' | 'construction'>('repair');
@@ -164,7 +164,6 @@ export default function Services() {
         try {
             return path;
         } catch (e) {
-            console.error(`Image not found: ${path}`);
             return '/fallback.jpg';
         }
     };

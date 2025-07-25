@@ -3,7 +3,7 @@ import styles from './Field.module.css';
 
 interface FieldProps {
     children: React.ReactNode,
-    className: 'orange' | 'gray' | 'transparentOrange' | 'transparentGray' | 'transparentOrangePrice';
+    className: 'orange' | 'gray' | 'transparentOrange' | 'transparentGray' | 'transparentOrangePrice' | 'orangeGlow';
 }
 
 function Field({children, className}: FieldProps) {

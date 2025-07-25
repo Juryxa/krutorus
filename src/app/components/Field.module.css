@@ -5,13 +5,14 @@
     border: none;
     border-radius: 30px;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     height: 38px;
     outline: none;
     white-space: nowrap;
     display: inline-flex;
     flex-direction: column;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     justify-content: center;
 }
 .orange{
@@ -21,22 +22,37 @@
     background-color: #9C9C9C;
 }
 .transparentOrange{
-    border: 1px solid #F4871A;
+    border: 2px solid #F4871A;
     padding: 20px 40px;
 }
 .transparentGray{
     position: relative;
     z-index: 10;
-    border: 1px solid #9C9C9C;
+    border: 2px solid #9C9C9C;
     padding: 30px 40px;
 }
 .transparentOrangePrice{
     margin: 5px;
-    border: 1px solid #F4871A;
+    border: 2px solid #F4871A;
     padding: 20px 20px;
     height: auto;
     text-wrap: wrap;
     text-align: left;
     white-space: pre-line;
 }
+.orangeGlow {
+    background-color: #F4871A;
+    box-shadow: 0 0 15px 5px rgba(244, 135, 26, 0.7);
+    transform: scale(1.05);
+    animation: pulseGlow 1850ms infinite alternate;
+}
 
+/* Анимация пульсации */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 5px 1px rgba(244, 135, 26, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 20px 8px rgba(244, 135, 26, 0.9);
+    }
+}
