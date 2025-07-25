@@ -22,7 +22,7 @@ export default function TgOrange() {
 
     // Наблюдатель за секцией Services
     useEffect(() => {
-        servicesSectionRef.current = document.getElementById('services-section');
+        servicesSectionRef.current = document.getElementById('tg-section');
 
         observerRef.current = new IntersectionObserver(
             ([entry]) => {
@@ -37,7 +37,7 @@ export default function TgOrange() {
 
                 }
             },
-            {threshold: 0.4}
+            {threshold: 0.1}
         );
 
         if (servicesSectionRef.current) {

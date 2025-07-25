@@ -3,11 +3,12 @@ import styles from './Plan.module.css'
 import Image from 'next/image'
 import trianglePencil from 'public/trianglePencil.png'
 import crossedPencil from 'public/crossedPencil.png'
+import TitleH2 from "@/app/components/TitleH2";
 
 function Plan() {
     return (
         <section className={styles.plan}>
-            <h2 className={styles.title}>Проект перепланировки и дизайн под ключ</h2>
+            <TitleH2>Проект перепланировки и дизайн под ключ</TitleH2>
             <h3 className={styles.titleH3}>польза и выгода.</h3>
             <div className={styles.cards}>
                 <span className={styles.adjacentCard}>

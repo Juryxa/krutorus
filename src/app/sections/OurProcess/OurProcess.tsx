@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import styles from './OurProcess.module.css'
 import Field from '@/app/components/Field'
 import Completed from "@/app/components/Completed";
+import TitleH2 from "@/app/components/TitleH2";
 
 function OurProcess() {
     const [activeIndex, setActiveIndex] = useState(0)
@@ -18,7 +19,7 @@ function OurProcess() {
 
     return (
         <section className={styles.process}>
-            <h2 className={styles.title}>Наш процесс</h2>
+            <TitleH2>Наш процесс</TitleH2>
             <div className={styles.fields}>
                 {fields.map((field, index) => (
                     <Field

@@ -170,7 +170,7 @@ export default function Services() {
 
     return (
         <section
-            id="services-section" // Добавьте этот ID
+            // Добавьте этот ID
             className={styles.services}
         >
             <section id="modal-root" className={styles.services}>

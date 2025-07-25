@@ -1,0 +1,42 @@
+/* Footer.module.css */
+.footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    padding: 30px 0;
+    background-color: #9C9C9C;
+}
+
+.link {
+    color: white;
+    text-decoration: underline;
+}
+.link2{
+    margin-right: 30px;
+}
+
+.images {
+    display: flex;
+    gap: 15px;
+}
+
+.iconLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Делаем SVG белыми */
+.iconLink img {
+    filter: brightness(0) invert(1);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}
