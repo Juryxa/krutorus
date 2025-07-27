@@ -27,7 +27,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("/krutorusTopBg.png");
+    background-image: url("/krutorusTopBg.webp");
     transform: scale(-1, 1);
     background-size: cover;
     background-repeat: no-repeat;
@@ -414,7 +414,7 @@
     z-index: 1001;
     overflow: hidden;
     border-radius: 50px;
-    background-image: url("/krutorusTopBg.png");
+    background-image: url("/krutorusTopBg.webp");
 }
 
 /* Усиливаем затемнение фона */
@@ -425,7 +425,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("/krutorusTopBg.png");
+    background-image: url("/krutorusTopBg.webp");
     transform: scale(-1, 1);
     background-size: cover;
     background-repeat: no-repeat;

@@ -222,7 +222,7 @@ export default function Calc() {
             <Head>
                 <link
                     rel="preload"
-                    href="/krutorusTopBg.png"
+                    href="/krutorusTopBg.webp"
                     as="image"
                     fetchPriority="high"
                 />

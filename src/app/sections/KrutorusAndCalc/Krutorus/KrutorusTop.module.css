@@ -1,7 +1,7 @@
 .krutorusTop{
     position: relative;
     border-radius: 50px;
-    background-image: url("/krutorusTopBg.png");
+    background-image: url("/krutorusTopBg.webp");
     background-size: cover;
     background-repeat: no-repeat;
     z-index: 0;
