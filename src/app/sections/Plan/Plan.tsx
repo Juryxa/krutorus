@@ -6,11 +6,18 @@ import crossedPencil from 'public/crossedPencil.png'
 import TitleH2 from "@/app/components/TitleH2";
 import OurProcess from "@/app/sections/OurProcess/OurProcess";
 import {useEffect, useRef, useState} from 'react';
+import PlanModal from "@/app/components/PlanModal";
 
 function Plan() {
     const [animate, setAnimate] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
     const animationPlayed = useRef(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+
+    const handleFormSubmit = (data: { name: string; phone: string; projectType: string }) => {
+        setModalIsOpen(false);
+    };
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -66,7 +73,7 @@ function Plan() {
                             Полный проект – от 2500 ₽/м²<br/>
                             Авторский / премиум – от 4500 ₽/м²<br/>
                         </p>
-                        <button className={styles.orderButton}>
+                        <button className={styles.orderButton} onClick={() => setModalIsOpen(true)}>
                             Консультация по проекту
                         </button>
                     </span>
@@ -80,6 +87,11 @@ function Plan() {
             </div>
 
             <OurProcess/>
+            <PlanModal
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+                onSubmit={handleFormSubmit}
+            />
         </section>
     );
 }

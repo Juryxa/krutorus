@@ -1,10 +1,11 @@
 'use client'
-import {useState} from 'react';
 import styles from './Button.module.css';
 import {Roboto_Flex} from "next/font/google";
 
 interface ButtonProps {
     children: React.ReactNode;
+    pressed?: boolean;
+    onClick?: () => void;
 }
 
 const robotoFlex = Roboto_Flex({
@@ -12,17 +13,12 @@ const robotoFlex = Roboto_Flex({
     display: 'swap',
 })
 
-export const Button = ({ children }: ButtonProps) => {
-    const [isPressed, setIsPressed] = useState(false);
-
-    const handleClick = () => {
-        setIsPressed(!isPressed);
-    };
-
+export const Button = ({ children, pressed = false, onClick }: ButtonProps) => {
     return (
         <button
-            className={`${styles.button} ${isPressed ? styles.pressed : ''} ${robotoFlex.className}`}
-            onClick={handleClick}
+            tabIndex={0}
+            className={`${styles.button} ${pressed ? styles.pressed : ''} ${robotoFlex.className}`}
+            onClick={onClick}
         >
             {children}
         </button>

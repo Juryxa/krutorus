@@ -33,7 +33,7 @@ const AccordionUI: React.FC<AccordionProps> = ({ sections, animate }) => {
                     style={{
                         opacity: animate ? 1 : 0,
                         transform: animate ? 'translateY(0)' : 'translateY(30px)',
-                        transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`
+                        transition: `opacity 0.5s ease ${index * 0.15}s, transform 0.5s ease ${index * 0.15}s`
                     }}
                 >
                     <div className={styles.block} onClick={() => handleToggle(index)}>

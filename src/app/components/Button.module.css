@@ -29,5 +29,9 @@
 .button:active {
     transform: scale(0.98);
 }
+.button:focus {
+    scale: 1.04;
+}
+
 
 

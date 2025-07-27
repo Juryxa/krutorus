@@ -1,4 +1,4 @@
-.customModalOverlay {
+.planModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -17,14 +17,15 @@
     to { opacity: 1; }
 }
 
-.customModal {
+.planModal {
     position: relative;
     padding: 30px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    justify-content: space-around;
     width: 90%;
+    height: 80%;
     max-width: 500px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.4s ease;
@@ -32,7 +33,7 @@
     overflow: hidden;
 }
 
-.customModal::before {
+.planModal::before {
     content: '';
     position: absolute;
     top: 0;
@@ -47,8 +48,7 @@
     z-index: -1;
 }
 
-/* Добавлен полупрозрачный черный фон для контраста */
-.customModal::after {
+.planModal::after {
     content: '';
     position: absolute;
     top: 0;
@@ -64,7 +64,7 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
-.closeButton {
+.planCloseButton {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -83,11 +83,11 @@
     justify-content: center;
 }
 
-.closeButton:hover {
+.planCloseButton:hover {
     color: #d5d5d5;
 }
 
-.modalTitle {
+.planModalTitle {
     color: white;
     margin-bottom: 20px;
     text-align: center;
@@ -96,39 +96,37 @@
     margin-top: 30px;
 }
 
-.modalForm {
+.planModalForm {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
-    gap: 50px;
     justify-content: space-around;
+    height: 100%;
+    gap: 30px;
+    width: 100%;
 }
 
-.modalInputs {
-    align-items: flex-start; /* Выравнивание по левому краю */
+.planModalInputs {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: 20px;
-    width: 80%;
+    width: 100%;
 }
 
-.formGroup {
+.planFormGroup {
     display: flex;
     flex-direction: column;
     gap: 8px;
     width: 100%;
 }
 
-/* Выравнивание меток по левому краю */
-.formGroup label {
+.planFormGroup label {
     text-align: left;
     width: 100%;
-    padding-left: 15px; /* Отступ для выравнивания с инпутами */
+    padding-left: 15px;
 }
 
-.gray {
+.planGray {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -138,29 +136,29 @@
     border-radius: 30px;
     padding: 12px 15px;
     width: 100%;
-    min-height: 60px; /* Фиксированная высота */
+    min-height: 60px;
+    position: relative;
 }
 
-.gray label {
+.planGray::after {
+    content: "▼";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    pointer-events: none;
+    font-size: 12px;
+}
+
+.planGray label {
     color: #FFFFFF;
     font-size: 18px;
     flex-shrink: 0;
-    width: 30%; /* Фиксированная ширина для label */
+    width: 40%;
 }
 
-.readOnlyInput {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 18px;
-    width: 65%; /* Фиксированная ширина для input */
-    text-align: right;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.green {
+.planGreen {
     background-color: #7D9A6AB0;
     border-radius: 20px;
     padding: 12px 15px;
@@ -170,38 +168,60 @@
     align-items: center;
     box-shadow: 0 2px 7px black;
     border: none;
-    min-height: 60px; /* Фиксированная высота */
+    min-height: 60px;
 }
 
-.green label {
+.planGreen label {
     color: #FFFFFFAB;
     font-size: 18px;
     font-weight: 400;
     flex-shrink: 0;
-    width: 30%; /* Фиксированная ширина для label */
+    width: 30%;
 }
 
-.editableInput {
+.planEditableInput {
     background-color: transparent;
     border: none;
     color: white;
     font-size: 18px;
-    width: 65%; /* Фиксированная ширина для input */
+    width: 65%;
     text-align: right;
     outline: none;
 }
 
-.editableInput::placeholder {
+select.planEditableInput {
+    cursor: pointer;
+    direction: rtl;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 4px 8px;
+    text-align: left;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+select.planEditableInput option {
+    background: #333;
+    color: white;
+    padding: 8px;
+}
+
+select.planEditableInput option:hover {
+    background: #F4871A;
+}
+
+.planEditableInput::placeholder {
     color: rgba(255, 255, 255, 0.67);
     opacity: 1;
     font-weight: 400;
 }
 
-.requiredField:not(:focus) {
+.planRequiredField:not(:focus) {
     border-color: #ff6b6b;
 }
 
-.submitButton {
+.planSubmitButton {
     background: rgba(255, 255, 255, 0.3);
     font-size: 20px;
     width: 100%;
@@ -216,16 +236,16 @@
     box-shadow: 0 0 9px 2px rgb(255, 138, 22), inset 0 0 9px 3px #F7CCA3;
 }
 
-.submitButton:hover {
+.planSubmitButton:hover {
     scale: 1.02;
 }
 
-.submitButton:disabled {
+.planSubmitButton:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
     transform: none;
 }
 
-.submitButton:active:not(:disabled) {
+.planSubmitButton:active:not(:disabled) {
     transform: translateY(1px);
 }
