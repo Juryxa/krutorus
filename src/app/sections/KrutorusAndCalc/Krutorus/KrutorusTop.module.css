@@ -4,9 +4,8 @@
     background-image: url("/krutorusTopBg.png");
     background-size: cover;
     background-repeat: no-repeat;
-    margin-top: 200px;
+    z-index: 0;
     color: white;
-    height: 100%;
 }
 .krutorusTop:after {
     content: '';
@@ -27,6 +26,31 @@
     justify-content: space-around;
     flex-direction: column;
 }
+.fields {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+.fields::-webkit-scrollbar {
+    height: 5px;
+}
+
+.fields::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.fields::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.fields::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 .title{
     font-size: 61px;
@@ -46,8 +70,28 @@
     line-height: 30px;
     font-weight: 400;
 }
-.repair, .building, .projectsDev{
-    display: flex;
+.repair,
+.building,
+.projectsDev {
+    display: inline-flex;
+    flex-wrap: wrap;
     gap: 10px;
-    margin: 10px 10px 5px -20px;
+    margin: 10px 20px 5px 0;
+
+}
+
+.fields > div:last-child {
+    margin-right: 0;
+}
+
+@media (max-width: 768px) {
+    .fields {
+        padding-bottom: 15px;
+    }
+
+    .repair,
+    .building,
+    .projectsDev {
+        width: 100%;
+    }
 }

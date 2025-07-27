@@ -174,11 +174,11 @@ export default function Services() {
                 </p>
             </div>
             <div className={`${styles.carouselContainer} ${inView ? styles.animate : ''}`} ref={ref}>
-                <Image src={getImagePath(`/stones/stone1.png`)} alt="Stone" width={161} height={129}
+                <Image src={getImagePath(`/stones/stone1.png`)} alt="Stone" width={161} height={129} loading="lazy"
                        className={styles.stone1}/>
-                <Image src={getImagePath(`/stones/stone2.png`)} alt="Stone" width={173} height={152}
+                <Image src={getImagePath(`/stones/stone2.png`)} alt="Stone" width={173} height={152} loading="lazy"
                        className={styles.stone2}/>
-                <Image src={getImagePath(`/stones/stone3.png`)} alt="Stone" width={300} height={450}
+                <Image src={getImagePath(`/stones/stone3.png`)} alt="Stone" width={300} height={450} loading="lazy"
                        className={styles.stone3}/>
                 <div className={styles.carousel}>
                     {

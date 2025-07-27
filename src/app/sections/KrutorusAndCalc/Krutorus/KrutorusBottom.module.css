@@ -60,12 +60,13 @@
 .imagestone{
     position: relative;
     user-select: none;
+    transform: rotate(-118deg);
 }
 .stone1{
     position: absolute;
     z-index: 0;
-    bottom: -100px;
-    right: -150px;
+    bottom: 60px;
+    right: -130px;
     filter: blur(5px);
 }
 .tgbtn{

@@ -6,11 +6,11 @@ interface NavProps {
     activeSection: string;
 }
 
-function Nav({ activeSection }: NavProps) {
+function Nav({activeSection}: NavProps) {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            element.scrollIntoView({behavior: 'smooth', block: 'start'});
         }
     };
 
@@ -23,7 +23,10 @@ function Nav({ activeSection }: NavProps) {
                 >
                     Круторус
                 </Button>
-                <Button pressed={false}>Калькулятор</Button>
+                <Button pressed={activeSection === 'krutorus'}
+                        onClick={() => scrollToSection('krutorus')}>
+                    Калькулятор
+                </Button>
                 <Button
                     pressed={activeSection === 'services'}
                     onClick={() => scrollToSection('services')}

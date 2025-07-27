@@ -1,0 +1,695 @@
+.calcSection{
+    width: 90%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.calc {
+    position: relative;
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 70%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s ease;
+    z-index: 2;
+    overflow: hidden;
+    border-radius: 50px;
+}
+
+.calc::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/krutorusTopBg.png");
+    transform: scale(-1, 1);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(1px);
+    z-index: -1;
+}
+
+.calc::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.stepContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 20px;
+}
+.stepContent4{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 20px;
+    position: relative;
+    overflow: hidden;
+}
+.arrow{
+    position: absolute;
+}
+
+.title {
+    border: 2px solid #F4871A;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top: none;
+    color: white;
+    font-size: 32px;
+    padding: 10px 30px;
+    background-color: #2422234D;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.title1 {
+    border: 2px solid #F4871A;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px 30px;
+    background-color: #2422234D;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.center{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 50%;
+}
+.center1{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10%;
+}
+.center4{
+    display: flex;
+    flex-direction: column;
+    gap: 300px;
+    margin-top: 18%;
+}
+.arrow{
+    position: absolute;
+    top: 30%;
+    bottom: 0;
+    right: 23%;
+}
+
+.description {
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.propertyButton {
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.propertyButton:hover {
+    transform: scale(1.02);
+}
+.propertyButton:active{
+    transform: scale(0.98);
+
+}
+
+.newBuilding {
+    background-color: #F4871A;
+    box-shadow: 0 0 9px rgb(255, 138, 22);
+    padding: 10px 40px;
+    letter-spacing: 0;
+    line-height: 100%;
+    border: none;
+    text-align: center;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    height: 38px;
+    transition: all 0.2s ease-out;
+    outline: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.secondary {
+    background-color: #9C9C9C;
+    color: white;
+    padding: 10px 40px;
+    letter-spacing: 0;
+    line-height: 100%;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 400;
+    height: 38px;
+    transition: all 0.2s ease-out;
+    outline: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.discount {
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 0;
+}
+.underline{
+    text-decoration: #F4871A underline;
+}
+.orange{
+    color: #F4871A;
+    font-weight: 600;
+}
+
+.footer {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: auto;
+    border: 2px solid #F4871A;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom: none;
+    padding: 10px 30px;
+    background-color: #2422234D;
+}
+
+.backOption {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #F4871A;
+    border-radius: 30px;
+    padding: 12px 20px;
+    color: white;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.cursor{
+    cursor: default;
+}
+
+.areaSelection{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.square{
+    height: 20px;
+    justify-self: flex-start;
+    width: 20px;
+    background-color: #F4871A;
+    border-radius: 4px;
+}
+
+.optionText{
+    text-align: center;
+    width: 60%;
+}
+
+.sectionTitle {
+    color: white;
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 15px;
+    width: 70%;
+}
+
+.areaButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.areaButton {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px 10px;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.areaButton:hover {
+    border-color: #F4871A;
+}
+
+.areaButton.selected {
+    background: rgba(244, 135, 26, 0.3);
+    border-color: #F4871A;
+    font-weight: bold;
+}
+
+.customArea {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.customArea input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.customArea input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #F4871A;
+    cursor: pointer;
+}
+
+.areaValue {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.confirmButton {
+    padding: 8px 20px;
+    background: rgba(244, 135, 26, 0.3);
+    border: 2px solid #F4871A;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.confirmButton:hover {
+    background: rgba(244, 135, 26, 0.5);
+}
+
+.selectedOptions {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.repairOptions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.repairOption {
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 2px solid #F4871A;
+    width: 80%;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+}
+.repairOption:before {
+    content: '';
+    border-radius: 30px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    filter: blur(1px);
+}
+
+.repairOption:hover {
+    background-color: rgba(191, 191, 191, 0.77);
+}
+
+.repairOption.selected {
+    background: #CBCBCBC4;
+    border-color: #F4871A;
+    font-weight: bold;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Более темный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Увеличиваем z-index */
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(2px); /* Добавляем размытие фона */
+}
+
+.modalContent {
+    position: relative;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2); /* Усиливаем тень */
+    animation: slideUp 0.4s ease;
+    z-index: 1001;
+    overflow: hidden;
+    border-radius: 50px;
+    background-image: url("/krutorusTopBg.png");
+}
+
+/* Усиливаем затемнение фона */
+.modalContent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/krutorusTopBg.png");
+    transform: scale(-1, 1);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(1px); /* Увеличиваем размытие */
+    z-index: -1;
+}
+
+.modalContent::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Усиливаем затемнение */
+    z-index: -1;
+}
+
+.closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 40px;
+    font-weight: 100;
+    cursor: pointer;
+    color: white;
+    transition: color 0.2s;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButton:hover {
+    color: #d5d5d5;
+}
+
+.modalTitle {
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.summary {
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px
+}
+
+
+.gray {
+    display: flex;
+    color: white;
+    justify-content: center;
+    gap: 30px;
+    font-weight: 500;
+    text-wrap: nowrap;
+    align-items: center;
+    border: 2px solid #F4871A;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(1px);
+    border-radius: 30px;
+    padding: 0px 25px;
+    width: 90%;
+    min-height: 45px;
+}
+
+.gray label {
+    color: #FFFFFF;
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 30%; /* Фиксированная ширина для label */
+}
+
+.summaryItem:last-child {
+    border-bottom: none;
+}
+
+.priceResult {
+    display: flex;
+    color: white;
+    justify-content: center;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+    border: 2px solid #F4871A;
+    background: #F4871A78;
+    backdrop-filter: blur(1px);
+    border-radius: 30px;
+    padding: 12px 25px;
+    width: 100%;
+    min-height: 60px;
+}
+.result{
+    display: flex;
+    color: white;
+    justify-content: center;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+    box-shadow: 0 0 12px rgb(255, 138, 22);
+    background: #F4871A;
+    backdrop-filter: blur(1px);
+    border-radius: 30px;
+    padding: 12px 25px;
+    width: 100%;
+    min-height: 60px;
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.formTitle {
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 70%;
+}
+
+.formGroup label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.formInput {
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 2px solid #F4871A;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.formInput::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.green {
+    background-color: #7D9A6AB0;
+    border-radius: 20px;
+    padding: 12px 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 7px black;
+    border: none;
+    min-height: 50px; /* Фиксированная высота */
+}
+
+.green label {
+    color: #FFFFFFAB;
+    font-size: 18px;
+    font-weight: 400;
+    flex-shrink: 0;
+    width: 30%; /* Фиксированная ширина для label */
+}
+.editableInput {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 65%; /* Фиксированная ширина для input */
+    text-align: right;
+    outline: none;
+}
+
+.editableInput::placeholder {
+    color: rgba(255, 255, 255, 0.67);
+    opacity: 1;
+    font-weight: 400;
+}
+.submitButton {
+    padding: 15px 20px;
+    width: 90%;
+    background: rgba(255, 255, 255, 0.3);
+    font-size: 18px;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+    box-shadow: 0 0 9px 2px rgb(255, 138, 22), inset 0 0 9px 3px #F7CCA3;
+}
+
+.submitButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px 4px rgb(255, 138, 22), inset 0 0 9px 3px #F7CCA3;
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.images{
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    padding-right: 20px;
+}
+
+.fallingStone {
+    position: absolute;
+    top: -150vh; /* Начальное положение - за пределами экрана сверху */
+    right: 10%; /* Начальное положение по горизонтали */
+    height: auto;
+    opacity: 1;
+    z-index: 7;
+    transition: none; /* Отключаем стандартные переходы */
+}
+
+.animateStone {
+    animation: stoneFall 1s ease-in-out forwards;
+}
+
+@keyframes stoneFall {
+    0% {
+        top: -100px;
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+    100% {
+        top: 80%;
+        right: 0;
+        opacity: 1;
+        transform: rotate(360deg);
+    }
+}

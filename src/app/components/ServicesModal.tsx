@@ -145,9 +145,9 @@ export default function ServicesModal({
                     <button
                         type="submit"
                         className={styles.submitButton}
-                        disabled={!phone}
+                        disabled={phone.replace(/\D/g, '').length !== 11}
                     >
-                        Конкретизировать цену
+                        Заказать консультацию
                     </button>
                 </form>
             </div>

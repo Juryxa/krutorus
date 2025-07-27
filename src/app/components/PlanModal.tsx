@@ -138,7 +138,7 @@ export default function PlanModal({
                     <button
                         type="submit"
                         className={styles.planSubmitButton}
-                        disabled={!phone}
+                        disabled={phone.replace(/\D/g, '').length !== 11}
                     >
                         Заказать консультацию
                     </button>
