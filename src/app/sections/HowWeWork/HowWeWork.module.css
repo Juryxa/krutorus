@@ -1,33 +1,34 @@
-.howWork{
+.howWork {
     position: relative;
     z-index: 1;
-    height: calc(100vh + 400px);
+    min-height: 100vh; /* Минимальная высота на весь экран */
+    height: auto; /* Высота подстраивается под контент */
     padding: 70px 0;
-    width: calc(100vw + 200px);
+    width: 100%; /* Исправляем ширину */
 }
-.howWork:before{
+
+.howWork:before {
     content: "";
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/HowWorkBg.webp") no-repeat center center fixed; /* fixed позиционирование */
     background-size: cover;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/HowWorkBg.webp"), no-repeat;
-    background-size: cover;
     z-index: -1;
 }
-.howWork:after{
-    height: 100%;
-    max-width: 100%;
+
+.howWork:after {
     content: '';
-    position: absolute;
+    position: absolute; /* Фиксируем градиент */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: linear-gradient(180deg, #242223, transparent);
-    z-index: 2;
+    z-index: -1;
 }
 .inner {
     height: 100%;
@@ -65,35 +66,4 @@
         flex-direction: column;
     }
 }
-@media (max-height: 890px) or (max-width: 890px) {
-    .howWork{
-        padding: 40px 0;
-        height: 150vh;
-    }
-}
 
-@media (max-height: 740px) or (max-width: 740px) {
-    .howWork{
-        padding: 30px 0;
-        height: 200vh;
-    }
-}
-@media (max-height: 550px) or (max-width: 550px) {
-    .howWork{
-        padding: 30px 0;
-        height: 250vh;
-    }
-}
-
-@media (max-height: 950px) and (max-width: 550px) {
-    .howWork{
-        padding: 30px 0;
-        height: 200vh;
-    }
-}
-@media (max-height: 700px) and (max-width: 450px) {
-    .howWork{
-        padding: 30px 0;
-        height: 250vh;
-    }
-}

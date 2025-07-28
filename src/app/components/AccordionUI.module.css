@@ -1,4 +1,4 @@
-
+/* AccordionUI.module.css */
 .accordion {
     width: 70%;
     margin-top: 40px;
@@ -17,6 +17,7 @@
     border-radius: 30px;
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(2px);
+    height: auto;
 }
 
 .title {
@@ -26,6 +27,7 @@
     justify-content: space-between;
     align-items: center;
     color: white;
+    padding: 10px 0;
 }
 
 .arrow {
@@ -47,12 +49,40 @@
     transition: max-height 0.3s ease-out;
 }
 
-.contentWrapper.expanded {
-    max-height: 90px;
-}
-
 .content {
     color: white;
     white-space: pre-line;
     padding: 10px 0;
+    margin: 0;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .accordion {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .block {
+        padding: 10px 20px;
+    }
+
+    .title {
+        font-size: 18px;
+        padding: 8px 0;
+    }
+
+    .content {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .block {
+        padding: 8px 15px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
 }
