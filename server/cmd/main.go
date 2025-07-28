@@ -4,6 +4,7 @@ import (
 	"baulin_proj/internal/config"
 	"baulin_proj/internal/handler"
 	"baulin_proj/internal/service"
+	"context"
 	"flag"
 	"log"
 	"time"
@@ -22,10 +23,19 @@ func main() {
 	cfg := config.MustLoad(*envPath)
 	log.Printf("CONFIG: %v\n", cfg)
 
-	tgBot, err := service.NewTelegramService(cfg.TelegramToken)
+	tgBot, err := service.NewTelegramService(cfg.TelegramToken, cfg.TelegramChatID)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go func() {
+		if err := tgBot.StartBot(ctx); err != nil {
+			log.Printf("Failed to start bot: %v\n", err)
+		}
+	}()
 
 	h := handler.NewHandler(tgBot, cfg.TelegramChatID)
 

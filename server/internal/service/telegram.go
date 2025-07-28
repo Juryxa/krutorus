@@ -1,19 +1,33 @@
 package service
 
 import (
+	"baulin_proj/internal/utils"
+	"context"
+	"fmt"
+	"log"
+	"time"
+
 	"github.com/PaulSonOfLars/gotgbot/v2"
+	"github.com/PaulSonOfLars/gotgbot/v2/ext"
+	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
 )
 
 type telegramService struct {
-	bot *gotgbot.Bot
+	bot      *gotgbot.Bot
+	chatID   int64
+	botToken string
 }
 
-func NewTelegramService(botToken string) (*telegramService, error) {
+func NewTelegramService(botToken string, chatID int64) (*telegramService, error) {
 	bot, err := gotgbot.NewBot(botToken, nil)
 	if err != nil {
 		return nil, err
 	}
-	return &telegramService{bot: bot}, nil
+	return &telegramService{
+		bot:      bot,
+		chatID:   chatID,
+		botToken: botToken,
+	}, nil
 }
 
 func (s *telegramService) SendNotification(chatID int64, message string) error {
@@ -21,35 +35,64 @@ func (s *telegramService) SendNotification(chatID int64, message string) error {
 	return err
 }
 
-// func (tg *telegramService) StartTelegramPolling(chatID int64) {
-// 	updater := ext.NewUpdater(nil)
-// 	dispatcher := updater.Dispatcher
+func (s *telegramService) StartBot(ctx context.Context) error {
+	dispatcher := ext.NewDispatcher(&ext.DispatcherOpts{
+		Error: func(b *gotgbot.Bot, ctx *ext.Context, err error) ext.DispatcherAction {
+			log.Println("an error occurred while handling update:", err.Error())
+			return ext.DispatcherActionNoop
+		},
+		MaxRoutines: ext.DefaultMaxRoutines,
+	})
 
-// 	commandHandler := handlers.NewCommand("start", func(b *gotgbot.Bot, ctx *ext.Context) error {
-// 		user := ctx.EffectiveUser
-// 		args := ctx.Args()
+	updater := ext.NewUpdater(dispatcher, nil)
 
-// 		source := "unknown"
-// 		if len(args) > 0 {
-// 			source = args[0]
-// 		}
+	dispatcher.AddHandler(handlers.NewCommand("start", s.handleStart))
 
-// 		msg := fmt.Sprintf(
-// 			"Новый пользователь запустил бота\n\n🆔 UserID: %d\n📍 Откуда: %s",
-// 			user.ID, source,
-// 		)
-// 		if _, err := b.SendMessage(chatID, msg, nil); err != nil {
-// 			return err
-// 		}
+	err := updater.StartPolling(s.bot, &ext.PollingOpts{
+		DropPendingUpdates: true,
+		GetUpdatesOpts: &gotgbot.GetUpdatesOpts{
+			Timeout: 9,
+			RequestOpts: &gotgbot.RequestOpts{
+				Timeout: time.Second * 10,
+			},
+		},
+	})
+	if err != nil {
+		return fmt.Errorf("failed to start polling: %w", err)
+	}
 
-// 		_, _ = b.SendMessage(user.ID, "Спасибо, скоро с вами свяжутся!", nil)
-// 		return nil
-// 	})
+	log.Printf("%s has been started...\n", s.bot.User.Username)
 
-// 	dispatcher.Start(commandHandler) // correct method :contentReference[oaicite:4]{index=4}
+	<-ctx.Done()
+	updater.Stop()
 
-// 	log.Println("Telegram polling started…")
-// 	if err := updater.StartPolling(tg.bot, nil); err != nil {
-// 		log.Fatalf("Telegram polling error: %v", err)
-// 	}
-// }
+	return nil
+}
+
+func (s *telegramService) handleStart(b *gotgbot.Bot, ctx *ext.Context) error {
+	user := ctx.EffectiveUser
+	log.Printf("новый пользователь: @%s", user.Username)
+	msg := fmt.Sprintf("👋 Привет, %s! С вами скоро свяжется наш менеджер.", user.FirstName)
+
+	_, err := b.SendMessage(user.Id, msg, nil)
+	if err != nil {
+		return fmt.Errorf("failed to send message to user: %w", err)
+	}
+
+	source := ""
+	if ctx.Update.Message != nil && len(ctx.Update.Message.Text) > 7 {
+		source = ctx.Update.Message.Text[7:]
+	}
+	if source == "" {
+		return fmt.Errorf("ошибка не получилось распарсить ?start= параметр")
+	}
+
+	adminMsg := utils.CreateMsgWithTgUser(user, source)
+
+	_, err = b.SendMessage(s.chatID, adminMsg, nil)
+	if err != nil {
+		return fmt.Errorf("failed to send message to admin: %w", err)
+	}
+
+	return nil
+}

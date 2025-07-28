@@ -3,6 +3,8 @@ package utils
 import (
 	"baulin_proj/internal/request"
 	"fmt"
+
+	"github.com/PaulSonOfLars/gotgbot/v2"
 )
 
 func CreateServiceTgMsg(req request.ServiceReq) string {
@@ -46,5 +48,15 @@ func CreateCalcTgMsg(req request.Calc) string {
 			"🔹 Тип ремонта: %s\n"+
 			"📞 Телефон: %s",
 		req.Name, req.Place, req.Square, req.Type, req.Phone,
+	)
+}
+
+func CreateMsgWithTgUser(user *gotgbot.User, source string) string {
+	return fmt.Sprintf(
+		"✉️ Пользователь хочет связаться в Telegram!\n\n"+
+			"👤 Telegram Тег: @%s\n"+
+			"👤 Telegram Имя: %s\n"+
+			"🔹 Откуда: %s\n",
+		user.Username, user.FirstName, source,
 	)
 }
