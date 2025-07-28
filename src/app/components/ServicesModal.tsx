@@ -19,6 +19,14 @@ export default function ServicesModal({
                                       }: ServicesModalProps) {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
@@ -30,26 +38,14 @@ export default function ServicesModal({
     }, [isOpen, onClose]);
 
     const formatPhoneNumber = (value: string) => {
-        // Удаляем все нецифровые символы
         const cleaned = value.replace(/\D/g, '');
-
-        // Ограничиваем длину номера (11 цифр для России)
         const limited = cleaned.slice(0, 11);
 
-        // Форматируем номер по шаблону +7 (XXX) XXX-XX-XX
         let formatted = '';
-        if (limited.length > 0) {
-            formatted = `+7 (${limited.slice(1, 4)}`;
-        }
-        if (limited.length > 4) {
-            formatted += `) ${limited.slice(4, 7)}`;
-        }
-        if (limited.length > 7) {
-            formatted += `-${limited.slice(7, 9)}`;
-        }
-        if (limited.length > 9) {
-            formatted += `-${limited.slice(9, 11)}`;
-        }
+        if (limited.length > 0) formatted = `+7 (${limited.slice(1, 4)}`;
+        if (limited.length > 4) formatted += `) ${limited.slice(4, 7)}`;
+        if (limited.length > 7) formatted += `-${limited.slice(7, 9)}`;
+        if (limited.length > 9) formatted += `-${limited.slice(9, 11)}`;
 
         return formatted;
     };
@@ -72,14 +68,14 @@ export default function ServicesModal({
 
     return (
         <section className={styles.customModalOverlay} onClick={onClose}>
-            <div className={styles.customModal} onClick={(e) => e.stopPropagation()}>
+            <div className={`${styles.customModal} ${isMobile ? styles.mobileModal : ''}`} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose} aria-label="Закрыть">
                     &times;
                 </button>
 
                 <h2 className={styles.modalTitle}>Заказать консультацию</h2>
 
-                <form onSubmit={handleSubmit} className={styles.modalForm} id={'serviceForm'}>
+                <form onSubmit={handleSubmit} className={styles.modalForm}>
                     <div className={styles.modalInputs}>
                         <div className={styles.formGroup}>
                             <div className={styles.gray}>
@@ -132,10 +128,7 @@ export default function ServicesModal({
                                     pattern="\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}"
                                     inputMode="numeric"
                                     onKeyPress={(e) => {
-                                        // Разрешаем только цифры и управляющие клавиши
-                                        if (!/[0-9\b]/.test(e.key) && e.key !== 'Backspace') {
-                                            e.preventDefault();
-                                        }
+                                        if (!/[0-9\b]/.test(e.key)) e.preventDefault();
                                     }}
                                 />
                             </div>

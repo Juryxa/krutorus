@@ -630,7 +630,7 @@
 .submitButton {
     padding: 12px 15px;
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
     background: rgba(255, 255, 255, 0.3);
     font-size: 16px;
     color: white;
@@ -805,6 +805,7 @@
     .calcSection {
         height: 90vh;
         min-height: 700px;
+        margin-bottom: 15rem;
     }
 
     .calc {

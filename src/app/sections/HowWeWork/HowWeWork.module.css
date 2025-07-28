@@ -53,3 +53,47 @@
     font-size: 18px;
     text-align: center;
 }
+@media screen and (max-width: 1000px) {
+    .title{
+        font-size: 2rem;
+    }
+    .text{
+        width: 60%;
+        font-size: 16px;
+    }
+    .fields{
+        flex-direction: column;
+    }
+}
+@media (max-height: 890px) or (max-width: 890px) {
+    .howWork{
+        padding: 40px 0;
+        height: 150vh;
+    }
+}
+
+@media (max-height: 740px) or (max-width: 740px) {
+    .howWork{
+        padding: 30px 0;
+        height: 200vh;
+    }
+}
+@media (max-height: 550px) or (max-width: 550px) {
+    .howWork{
+        padding: 30px 0;
+        height: 250vh;
+    }
+}
+
+@media (max-height: 950px) and (max-width: 550px) {
+    .howWork{
+        padding: 30px 0;
+        height: 200vh;
+    }
+}
+@media (max-height: 700px) and (max-width: 450px) {
+    .howWork{
+        padding: 30px 0;
+        height: 250vh;
+    }
+}

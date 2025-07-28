@@ -1,3 +1,4 @@
+/* Services.module.css */
 .services {
     display: flex;
     flex-direction: column;
@@ -44,7 +45,7 @@
 }
 
 .text {
-    width: 40rem;
+    width: 40%;
     font-size: 18px;
     max-width: 90%;
 }
@@ -68,7 +69,7 @@
     width: 90rem;
     position: relative;
     z-index: 5;
-    height: 300px;
+    height: 390px;
 }
 
 .card {
@@ -97,24 +98,12 @@
     justify-content: space-between;
     width: 100%;
     height: 100%;
-    overflow-y: auto; /* Скроллбар теперь здесь */
     padding: 20px 10px 20px 20px;
-    box-sizing: border-box; /* Учитываем padding в размерах */
-    scrollbar-width: thin; /* Для Firefox */
-    scrollbar-color: black #242223d6; /* Для Firefox */
+    box-sizing: border-box;
 }
-
-/* Для Chrome, Edge, Safari */
-.cardContent::-webkit-scrollbar {
-    width: 6px; /* Ширина скроллбара */
-}
-
-.cardContent::-webkit-scrollbar-track {
-    background: #242223d6; /* Цвет трека */
-}
-
-.cardContent::-webkit-scrollbar-thumb {
-    background-color: black; /* Цвет ползунка */
+.description{
+    word-break: normal;
+    white-space: pre-line;
 }
 
 .orderButton {
@@ -210,36 +199,234 @@
     padding: 10px;
     cursor: pointer;
     z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 }
 
 .prevButton { left: 10px; }
 .nextButton { right: 10px; }
 
-.modal {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: 50px auto;
-    outline: none;
-}
-
-.overlay {
-    background: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    z-index: 30;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+.dots {
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    z-index: 10;
 }
 
-.modal form { display: flex; flex-direction: column; gap: 15px; }
-.modal label { display: flex; flex-direction: column; gap: 5px; }
-.modal input, .modal button { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-.modal button { background: #0088cc; color: white; border: none; cursor: pointer; }
-.modal button[type='button'] { background: #ccc; }
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
+.activeDot {
+    background-color: #f4871a;
+}
+/* Add these to Services.module.css */
+.constructionCard {
+    height: auto !important;
+    min-height: 280px;
+    overflow-y: visible !important;
+}
+
+.mobileCarousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.mobileArrow {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 10;
+}
+
+.mobileCardWrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Update existing styles */
+@media (max-width: 768px) {
+    .carousel {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    .prevButton, .nextButton {
+        display: none;
+    }
+
+    .card {
+        width: 85%;
+        min-height: 320px;
+    }
+
+    .mobileActive {
+        display: block;
+        position: relative;
+        transform: none;
+        opacity: 1;
+        filter: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 320px) {
+    .card {
+        min-height: 260px;
+    }
+}
+
+/* Адаптивные стили */
+@media (max-width: 1200px) {
+    .carousel {
+        width: 80rem;
+    }
+    .title {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 992px) {
+    .carousel {
+        width: 70rem;
+        gap: 20px;
+    }
+    .card {
+        width: 320px;
+        height: 300px;
+    }
+    .leftAdjacent {
+        transform: translateX(-350px);
+    }
+    .rightAdjacent {
+        transform: translateX(350px);
+    }
+    .title {
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .services {
+        padding-bottom: 60px;
+    }
+    .options {
+        margin-top: 50px;
+    }
+    .title {
+        font-size: 40px;
+        margin: 20px 0;
+    }
+    .text {
+        width: 90%;
+        font-size: 16px;
+        padding: 0 15px;
+        min-height: 80px;
+        transition: none;
+    }
+    .carouselContainer {
+        height: auto;
+        flex-direction: column;
+        padding: 20px 0;
+    }
+    .carousel {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .card {
+        position: relative;
+        width: 90%;
+        height: auto;
+        min-height: 280px;
+        margin: 0 auto;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        display: none;
+    }
+    .mobileActive {
+        display: block;
+    }
+    .mobileHidden {
+        display: none;
+    }
+    .prevButton, .nextButton {
+        position: relative;
+        top: auto;
+        transform: none;
+        margin: 10px;
+    }
+    .stone1, .stone2, .stone3 {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 32px;
+    }
+    .cardContent {
+        padding: 15px;
+        gap: 20px;
+    }
+    .card {
+        min-height: 240px;
+    }
+    .orderButton {
+        padding: 8px 30px;
+    }
+}
+
+@media (max-width: 320px) {
+    .title {
+        font-size: 28px;
+    }
+    .text {
+        font-size: 14px;
+    }
+    .card {
+        width: 95%;
+        min-height: 220px;
+    }
+    .cardContent h3 {
+        font-size: 18px;
+    }
+    .cardContent p {
+        font-size: 14px;
+    }
+    .orderButton {
+        padding: 6px 25px;
+        font-size: 14px;
+    }
+}

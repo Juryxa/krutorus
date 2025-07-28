@@ -429,7 +429,7 @@ export default function Calc() {
                             <div className={styles.areaSelection}>
                                 <h3 className={styles.sectionTitle}>Площадь (м²):</h3>
                                 <div className={styles.areaButtons}>
-                                    {[30, 50, 70].map((size) => (
+                                    {[50, 70].map((size) => (
                                         <button
                                             key={size}
                                             className={`${styles.areaButton} ${area === size ? styles.selected : ''}`}
