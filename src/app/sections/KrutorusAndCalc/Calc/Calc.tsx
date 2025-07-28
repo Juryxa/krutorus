@@ -10,6 +10,7 @@ import arrowSig from 'public/arrowZig.png'
 import Head from "next/head";
 import stone from 'public/stones/stone1.png'
 
+// Типы и данные для ремонта
 interface RepairCard {
     title: string;
     titleFor: string;
@@ -44,21 +45,70 @@ const repairCards: RepairCard[] = [
     },
 ];
 
+// Типы и данные для строительства
+interface ConstructionCard {
+    title: string;
+    price: string | number;
+}
+
+const constructionCards: ConstructionCard[] = [
+    {
+        title: 'Строительство домов',
+        price: 12990
+    },
+    {
+        title: 'Строительство коттеджей',
+        price: 9990
+    },
+    {
+        title: 'Строительство складских помещений',
+        price: 11990
+    },
+    {
+        title: 'Установка заборов',
+        price: 490
+    },
+    {
+        title: 'Сварочные работы',
+        price: 150
+    },
+    {
+        title: 'Строительство ангаров',
+        price: 7990
+    },
+];
+
 export default function Calc() {
     // Состояния для шагов калькулятора
     const [step, setStep] = useState<number>(0);
+    const [serviceType, setServiceType] = useState<'repair' | 'building' | null>(null);
     const [propertyType, setPropertyType] = useState<'new' | 'old' | null>(null);
     const [area, setArea] = useState<number | null>(null);
     const [areaCustom, setAreaCustom] = useState<number>(150);
     const [repairType, setRepairType] = useState<string | null>(null);
     const [repairTypeFor, setRepairTypeFor] = useState<string | null>(null);
+    const [constructionType, setConstructionType] = useState<string | null>(null);
 
     // Состояния для модалки
     const [name, setName] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
 
-    // Расчет цены
-    const calculatePrice = useCallback(() => {
+    // Извлечение минимальной цены из строки
+    const extractMinPrice = (price: string | number): number => {
+        if (typeof price === 'number') {
+            return price;
+        }
+
+        // Ищем все числа в строке
+        const numbers = price.match(/\d+/g)?.map(Number) || [];
+        if (numbers.length === 0) return 0;
+
+        // Находим минимальное число
+        return Math.min(...numbers);
+    };
+
+    // Расчет цены для ремонта
+    const calculateRepairPrice = useCallback(() => {
         if (!repairType || area === null) return 0;
 
         const repairCard = repairCards.find(card => card.title === repairType);
@@ -71,6 +121,27 @@ export default function Calc() {
 
         return Math.round(price);
     }, [repairType, area, propertyType]);
+
+    // Расчет цены для строительства
+    const calculateBuildingPrice = useCallback(() => {
+        if (!constructionType || area === null) return 0;
+
+        const constructionCard = constructionCards.find(card => card.title === constructionType);
+        if (!constructionCard) return 0;
+
+        const minPrice = extractMinPrice(constructionCard.price);
+        return Math.round(minPrice * area);
+    }, [constructionType, area]);
+
+    // Общая функция расчета цены
+    const calculatePrice = useCallback(() => {
+        if (serviceType === 'repair') {
+            return calculateRepairPrice();
+        } else if (serviceType === 'building') {
+            return calculateBuildingPrice();
+        }
+        return 0;
+    }, [serviceType, calculateRepairPrice, calculateBuildingPrice]);
 
     // Форматирование номера телефона
     const formatPhoneNumber = (value: string) => {
@@ -96,7 +167,6 @@ export default function Calc() {
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const formatted = formatPhoneNumber(e.target.value);
-
         setPhone(formatted);
     };
 
@@ -108,114 +178,156 @@ export default function Calc() {
         console.log({
             name,
             phone,
+            serviceType,
             propertyType,
             area,
             repairType,
+            constructionType,
             price: calculatePrice()
         });
 
         // Сброс формы
         setName('');
         setPhone('');
-        setStep(0);
-        setPropertyType(null);
-        setArea(null);
-        setRepairType(null);
     };
 
     // Обработка клавиши Escape
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && step === 3) setStep(2);
+            if (e.key === 'Escape' && (step === 3 || step === 4)) {
+                if (serviceType === 'building') setStep(2);
+                if (serviceType === 'repair') setStep(3);
+            }
         };
 
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
-    }, [step]);
+    }, [step, serviceType]);
 
     // Форматирование цены
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('ru-RU').format(price) + ' руб.';
     };
 
-    const renderModal = () => (
-        <div className={styles.modalOverlay} onClick={() => setStep(2)}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <button
-                    className={styles.closeButton}
-                    onClick={() => setStep(2)}
-                    aria-label="Закрыть"
-                >
-                    &times;
-                </button>
+    const renderModal = () => {
+        const isRepair = serviceType === 'repair';
+        const isBuilding = serviceType === 'building';
 
-                <h2 className={styles.modalTitle}>Мы уже прикинули итог:</h2>
-
-                <div className={styles.summary}>
-                    <div className={styles.gray}>
-                        <span>Где делаем ремонт?</span>
-                        <span>{propertyType === 'new' ? '– Новостройка' : '– Вторичка'}</span>
-                    </div>
-                    <div className={styles.gray}>
-                        <span>Площадь</span>
-                        <span>– {area} м²</span>
-                    </div>
-                    <div className={styles.gray}>
-                        <span>Тип ремонта</span>
-                        <span>– {repairType}</span>
-                    </div>
-                </div>
-
-                <div className={styles.priceResult}>
-                    Примерная цена {repairTypeFor?.toLowerCase()} ремонта для Вас
-                    от {formatPrice(calculatePrice())}
-                </div>
-                <h3 className={styles.formTitle}>
-                    Мы рассчитаем стоимость точнее! Займёт 15 секунд. Заполните поля ниже
-                </h3>
-
-
-                <form onSubmit={handleSubmit} className={styles.modalForm}>
-                    <div className={styles.formGroup}>
-                        <div className={`${styles.green} ${!phone ? styles.requiredField : ''}`}>
-                            <label className={styles.formLabel}>Имя:</label>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Ваше имя"
-                                maxLength={50}
-                                className={styles.editableInput}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <div className={`${styles.green} ${!phone ? styles.requiredField : ''}`}>
-                            <label className={styles.formLabel}>Телефон:</label>
-                            <input
-                                type="tel"
-                                value={phone}
-                                onChange={handlePhoneChange}
-                                placeholder="+7 (___) ___-__-__"
-                                required
-                                className={styles.editableInput}
-                            />
-                        </div>
-                    </div>
-
+        return (
+            <div className={styles.modalOverlay} onClick={() => {
+                if (serviceType === 'building') setStep(2);
+                if (serviceType === 'repair') setStep(3);
+            }}>
+                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                     <button
-                        type="submit"
-                        className={styles.submitButton}
-                        onClick={()=>setStep(4)}
-                        disabled={phone.replace(/\D/g, '').length !== 11}
+                        className={styles.closeButton}
+                        onClick={() => {
+                            if (serviceType === 'building') setStep(2);
+                            if (serviceType === 'repair') setStep(3);
+                        }}
+                        aria-label="Закрыть"
                     >
-                        Конкретизировать цену
+                        &times;
                     </button>
-                </form>
+
+                    <h2 className={styles.modalTitle}>Мы уже прикинули итог:</h2>
+
+                    <div className={styles.summary}>
+                        {isRepair && (
+                            <div className={styles.gray}>
+                                <span>Где делаем ремонт?</span>
+                                <span className={styles.textRight}>{propertyType === 'new' ? '– Новостройка' : '– Вторичка'}</span>
+                            </div>
+                        )}
+
+                        <div className={styles.gray}>
+                            <span>Площадь</span>
+                            <span className={styles.textRight}>– {area} м²</span>
+                        </div>
+
+                        {isRepair && (
+                            <div className={styles.gray}>
+                                <span>Тип ремонта</span>
+                                <span className={styles.textRight}>– {repairType}</span>
+                            </div>
+                        )}
+
+                        {isBuilding && (
+                            <div className={styles.gray}>
+                                <span>Вид строительства</span>
+                                <span className={styles.textRight}>– {constructionType}</span>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={styles.priceResult}>
+                        {isRepair && `Примерная цена ${repairTypeFor?.toLowerCase()} ремонта для Вас`}
+                        {isBuilding && `Примерная цена ${constructionType?.toLowerCase()} для Вас`}
+                        <br/>
+                        от {formatPrice(calculatePrice())}
+                    </div>
+
+                    <h3 className={styles.formTitle}>
+                        Мы рассчитаем стоимость точнее! Займёт 15 секунд. Заполните поля ниже
+                    </h3>
+
+                    <form onSubmit={handleSubmit} className={styles.modalForm}>
+                        <div className={styles.formGroup}>
+                            <div className={`${styles.green} ${!phone ? styles.requiredField : ''}`}>
+                                <label className={styles.formLabel}>Имя:</label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Ваше имя"
+                                    maxLength={50}
+                                    className={styles.editableInput}
+                                />
+                            </div>
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <div className={`${styles.green} ${!phone ? styles.requiredField : ''}`}>
+                                <label className={styles.formLabel}>Телефон:</label>
+                                <input
+                                    type="tel"
+                                    value={phone}
+                                    onChange={handlePhoneChange}
+                                    placeholder="+7 (___) ___-__-__"
+                                    required
+                                    className={styles.editableInput}
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className={styles.submitButton}
+                            onClick={() => {
+                                if (serviceType === 'repair') setStep(5);
+                                if (serviceType === 'building') setStep(4);
+                            }}
+                            disabled={phone.replace(/\D/g, '').length !== 11}
+                        >
+                            Конкретизировать цену
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
+
+    // Функция сброса калькулятора
+    const resetCalculator = () => {
+        setStep(0);
+        setServiceType(null);
+        setPropertyType(null);
+        setArea(null);
+        setRepairType(null);
+        setConstructionType(null);
+        setName('');
+        setPhone('');
+    };
 
     return (
         <section className={styles.calcSection}>
@@ -228,32 +340,31 @@ export default function Calc() {
                 />
             </Head>
             <section className={styles.calc}>
-                {/* Шаг 0: Выбор типа недвижимости */}
+                {/* Шаг 0: Выбор типа услуги */}
                 {step === 0 && (
                     <div className={styles.stepContent}>
                         <h1 className={styles.title}>Калькулятор</h1>
                         <div className={styles.center}>
-                            <p className={styles.description}>Рассчитай стоимость за 3 шага — Выбери где будем
-                                ремонтировать!</p>
+                            <p className={styles.description}>Рассчитай стоимость за 3 шага — Выбери тип услуги</p>
 
                             <div className={styles.buttonGroup}>
                                 <button
                                     className={`${styles.propertyButton} ${styles.newBuilding}`}
                                     onClick={() => {
-                                        setPropertyType('new');
+                                        setServiceType('repair');
                                         setStep(1);
                                     }}
                                 >
-                                    Новостройка
+                                    Ремонт
                                 </button>
                                 <button
                                     className={`${styles.propertyButton} ${styles.secondary}`}
                                     onClick={() => {
-                                        setPropertyType('old');
+                                        setServiceType('building');
                                         setStep(1);
                                     }}
                                 >
-                                    Вторичка
+                                    Стройка
                                 </button>
                             </div>
 
@@ -264,8 +375,46 @@ export default function Calc() {
                     </div>
                 )}
 
-                {/* Шаг 1: Выбор площади */}
-                {step === 1 && (
+                {/* Шаг 1: Для ремонта - выбор типа недвижимости, для стройки - выбор площади */}
+                {step === 1 && serviceType === 'repair' && (
+                    <div className={styles.stepContent}>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери где будем ремонтировать!</h1>
+                        <div className={styles.center1}>
+                            <div
+                                className={styles.backOption}
+                                onClick={() => setStep(0)}
+                            >
+                                <span className={styles.square}></span>
+                                <span className={styles.optionText}>Ремонт</span>
+                            </div>
+
+                            <div className={styles.buttonGroup}>
+                                <button
+                                    className={`${styles.propertyButton} ${styles.newBuilding}`}
+                                    onClick={() => {
+                                        setPropertyType('new');
+                                        setStep(2);
+                                    }}
+                                >
+                                    Новостройка
+                                </button>
+                                <button
+                                    className={`${styles.propertyButton} ${styles.secondary}`}
+                                    onClick={() => {
+                                        setPropertyType('old');
+                                        setStep(2);
+                                    }}
+                                >
+                                    Вторичка
+                                </button>
+                            </div>
+                        </div>
+                        <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
+                    </div>
+                )}
+
+                {/* Шаг 1: Для стройки - сразу выбор площади */}
+                {step === 1 && serviceType === 'building' && (
                     <div className={styles.stepContent}>
                         <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери площадь</h1>
                         <div className={styles.center1}>
@@ -274,8 +423,7 @@ export default function Calc() {
                                 onClick={() => setStep(0)}
                             >
                                 <span className={styles.square}></span>
-                                <span
-                                    className={styles.optionText}>{propertyType === 'new' ? 'Новостройка' : 'Вторичка'}</span>
+                                <span className={styles.optionText}>Стройка</span>
                             </div>
 
                             <div className={styles.areaSelection}>
@@ -329,13 +477,135 @@ export default function Calc() {
                                 )}
                             </div>
                         </div>
-
                         <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
                     </div>
                 )}
 
-                {/* Шаг 2: Выбор типа ремонта */}
-                {step === 2 && (
+                {/* Шаг 2: Для ремонта - выбор площади */}
+                {step === 2 && serviceType === 'repair' && (
+                    <div className={styles.stepContent}>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери площадь</h1>
+                        <div className={styles.center1}>
+                            <div className={styles.selectedOptions}>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(0)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>Ремонт</span>
+                                </div>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(1)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>
+                                        {propertyType === 'new' ? 'Новостройка' : 'Вторичка'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className={styles.areaSelection}>
+                                <h3 className={styles.sectionTitle}>Площадь (м²):</h3>
+                                <div className={styles.areaButtons}>
+                                    {[30, 50, 70].map((size) => (
+                                        <button
+                                            key={size}
+                                            className={`${styles.areaButton} ${area === size ? styles.selected : ''}`}
+                                            onClick={() => {
+                                                setArea(size);
+                                                setStep(3);
+                                            }}
+                                        >
+                                            от {size}
+                                        </button>
+                                    ))}
+                                    <button
+                                        className={`${styles.areaButton} ${area && area >= 100 ? styles.selected : ''}`}
+                                        onClick={() => {
+                                            setArea(areaCustom);
+                                        }}
+                                    >
+                                        свыше 100
+                                    </button>
+                                </div>
+
+                                {area && area >= 100 && (
+                                    <div className={styles.customArea}>
+                                        <input
+                                            type="range"
+                                            min="100"
+                                            max="300"
+                                            value={areaCustom}
+                                            onChange={(e) => {
+                                                const value = parseInt(e.target.value);
+                                                setAreaCustom(value);
+                                                setArea(value);
+                                            }}
+                                        />
+                                        <div className={styles.areaValue}>
+                                            {areaCustom} м²
+                                            <button
+                                                className={styles.confirmButton}
+                                                onClick={() => setStep(3)}
+                                            >
+                                                Подтвердить
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
+                    </div>
+                )}
+
+                {/* Шаг 2: Для стройки - выбор вида строительства */}
+                {step === 2 && serviceType === 'building' && (
+                    <div className={styles.stepContent}>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери вид строительства</h1>
+                        <div className={styles.center1}>
+                            <div className={styles.selectedOptions}>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(0)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>Стройка</span>
+                                </div>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(1)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>{area} м²</span>
+                                </div>
+                            </div>
+
+                            <div className={styles.repairSelection}>
+                                <h3 className={styles.sectionTitle}>Вид строительства:</h3>
+                                <div className={styles.repairOptions}>
+                                    {constructionCards.map((card) => (
+                                        <div
+                                            key={card.title}
+                                            className={`${styles.repairOption} ${constructionType === card.title ? styles.selected : ''}`}
+                                            onClick={() => {
+                                                setConstructionType(card.title);
+                                                setStep(3);
+                                            }}
+                                        >
+                                            <div className={styles.constructionTitle}>{card.title}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
+                    </div>
+                )}
+
+                {/* Шаг 3: Для ремонта - выбор типа ремонта */}
+                {step === 3 && serviceType === 'repair' && (
                     <div className={styles.stepContent}>
                         <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Это последний шаг!</h1>
                         <div className={styles.center1}>
@@ -345,15 +615,23 @@ export default function Calc() {
                                     onClick={() => setStep(0)}
                                 >
                                     <span className={styles.square}></span>
-                                    <span
-                                        className={styles.optionText}>{propertyType === 'new' ? 'Новостройка' : 'Вторичка'}</span>
+                                    <span className={styles.optionText}>Ремонт</span>
                                 </div>
                                 <div
                                     className={styles.backOption}
                                     onClick={() => setStep(1)}
                                 >
                                     <span className={styles.square}></span>
-                                    <span className={styles.optionText}>{area ? `${area} м²` : 'площадь'}</span>
+                                    <span className={styles.optionText}>
+                                        {propertyType === 'new' ? 'Новостройка' : 'Вторичка'}
+                                    </span>
+                                </div>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(2)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>{area} м²</span>
                                 </div>
                             </div>
 
@@ -366,8 +644,8 @@ export default function Calc() {
                                             className={`${styles.repairOption} ${repairType === card.title ? styles.selected : ''}`}
                                             onClick={() => {
                                                 setRepairType(card.title);
-                                                setRepairTypeFor(card.titleFor)
-                                                setStep(3);
+                                                setRepairTypeFor(card.titleFor);
+                                                setStep(4);
                                             }}
                                         >
                                             {card.title}
@@ -380,35 +658,81 @@ export default function Calc() {
                     </div>
                 )}
 
-                {/* Шаг 3: Модалка с результатом */}
-                {step === 3 && createPortal(renderModal(), document.body)}
+                {/* Модалка с результатом */}
+                {(step === 4 && serviceType === 'repair') ||
+                (step === 3 && serviceType === 'building') ?
+                    createPortal(renderModal(), document.body) : null}
 
-                {/* Шаг 4: Итог */}
-                {step === 4 && (
+                {/* Итоговый шаг для ремонта */}
+                {step === 5 && serviceType === 'repair' && (
                     <div className={styles.stepContent4}>
                         <h1 className={styles.title1}>Можем сделать это ещё раз!</h1>
                         <div className={styles.center4}>
                             <div className={styles.result}>
                                 Готово! Итоговая стоимость вашего ремонта
                             </div>
-                            <Image src={arrowSig} alt={'arrow'} className={styles.arrow}/>
-                            <div className={`${styles.backOption} ${styles.cursor}`}>Для Вас: ~ {formatPrice(calculatePrice()*0.9)}</div>
+                            <Image
+                                src={arrowSig}
+                                alt={'arrow'}
+                                className={styles.arrow}
+                                priority
+                            />
+                            <div className={`${styles.backOption} ${styles.cursor}`}>
+                                Для Вас: ~ {formatPrice(Math.round(calculatePrice() * 0.9))}
+                            </div>
+                            <button
+                                className={styles.submitButton}
+                                onClick={resetCalculator}
+                                style={{marginTop: '20px'}}
+                            >
+                                Рассчитать снова
+                            </button>
                         </div>
                         <Image
                             width={150}
                             height={100}
                             src={stone}
                             alt="stone"
-                            className={`${styles.fallingStone} ${step === 4 ? styles.animateStone : ''}`}
+                            className={`${styles.fallingStone} ${styles.animateStone}`}
+                            priority
+                        />
+                    </div>
+                )}
+
+                {/* Итоговый шаг для строительства */}
+                {step === 4 && serviceType === 'building' && (
+                    <div className={styles.stepContent4}>
+                        <h1 className={styles.title1}>Можем сделать это ещё раз!</h1>
+                        <div className={styles.center4}>
+                            <div className={styles.result}>
+                                Готово! Итоговая стоимость вашего строительства
+                            </div>
+                            <Image
+                                src={arrowSig}
+                                alt={'arrow'}
+                                className={styles.arrow}
+                                priority
+                            />
+                            <div className={`${styles.backOption} ${styles.cursor}`}>
+                                Для Вас: ~ {formatPrice(Math.round(calculatePrice() * 0.9))}
+                            </div>
+                        </div>
+                        <Image
+                            width={150}
+                            height={100}
+                            src={stone}
+                            alt="stone"
+                            className={`${styles.fallingStone} ${styles.animateStone}`}
+                            priority
                         />
                     </div>
                 )}
             </section>
             <div className={styles.images}>
                 <Link href={'/'} className={styles.iconLink}><Image src={tg} alt="telegram" width={40}
-                                                                    height={40}/></Link>
+                                                                    height={40} priority/></Link>
                 <Link href={'/'} className={styles.iconLink}><Image src={mail} alt="email" width={40}
-                                                                    height={40}/></Link>
+                                                                    height={40} priority/></Link>
             </div>
         </section>
     );

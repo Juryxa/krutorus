@@ -22,3 +22,19 @@ img{
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+#calculator{
+  display: flex;
+  width: 30%;
+  justify-content: center;
+}
+@media (max-width: 1300px) {
+  #calculator {
+    min-width: 70%;
+    height: 50%;
+  }
+}
+@media (max-width: 600px) {
+  #calculator {
+    width: 98%;
+  }
+}

@@ -8,7 +8,8 @@
     font-size: 16px;
     font-weight: 400;
     height: 38px;
-    width: max-content;
+    width: auto;
+    max-width: 100%;
     outline: none;
     white-space: nowrap;
     display: inline-flex;
@@ -16,6 +17,7 @@
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     justify-content: center;
 }
+
 .orange{
     background-color: #F4871A;
 }
@@ -55,5 +57,22 @@
     }
     100% {
         box-shadow: 0 0 20px 8px rgba(244, 135, 26, 0.9);
+    }
+}
+@media (max-width: 450px) {
+    .field {
+        font-size: 14px;
+        width: auto;
+        text-align: center;
+        white-space: wrap;
+    }
+}
+@media screen and (max-width: 550px) {
+    .transparentOrange, .transparentGray{
+        width: auto;
+        font-size: 14px;
+        text-align: center;
+        white-space: wrap;
+        padding: 30px;
     }
 }
