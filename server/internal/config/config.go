@@ -9,9 +9,10 @@ import (
 )
 
 type Config struct {
-    Port           string `env:"PORT"`
-    TelegramToken  string `env:"TELEGRAM_TOKEN"`
-    TelegramChatID int64  `env:"TELEGRAM_CHAT_ID"`
+	Port           string `env:"PORT"`
+	TelegramToken  string `env:"TELEGRAM_TOKEN"`
+	TelegramChatID int64  `env:"TELEGRAM_CHAT_ID"`
+	FrontCORS      string `env:"FRONT_CORS"`
 }
 
 func MustLoad(path string) *Config {
