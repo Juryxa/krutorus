@@ -8,7 +8,7 @@ import (
 )
 
 type Calc struct {
-	Place  string `json:"place"`
+	Place  string `json:"place,omitempty"`
 	Square string `json:"square"`
 	Type   string `json:"type"`
 	Name   string `json:"name,omitempty"`
@@ -26,14 +26,6 @@ func (req Calc) Validate(c *gin.Context) {
 	if req.Type == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Тип услуги обязателен для заполнения",
-		})
-		log.Println("Validation: Тип услуги обязателен для заполнения")
-
-		return
-	}
-	if req.Place == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Место обязательно для заполнения",
 		})
 		log.Println("Validation: Тип услуги обязателен для заполнения")
 
