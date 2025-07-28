@@ -72,12 +72,6 @@ func (s *telegramService) StartBot(ctx context.Context) error {
 func (s *telegramService) handleStart(b *gotgbot.Bot, ctx *ext.Context) error {
 	user := ctx.EffectiveUser
 	log.Printf("новый пользователь: @%s", user.Username)
-	msg := fmt.Sprintf("👋 Привет, %s! С вами скоро свяжется наш менеджер.", user.FirstName)
-
-	_, err := b.SendMessage(user.Id, msg, nil)
-	if err != nil {
-		return fmt.Errorf("failed to send message to user: %w", err)
-	}
 
 	source := ""
 	if ctx.Update.Message != nil && len(ctx.Update.Message.Text) > 7 {
@@ -87,8 +81,14 @@ func (s *telegramService) handleStart(b *gotgbot.Bot, ctx *ext.Context) error {
 		return fmt.Errorf("ошибка не получилось распарсить ?start= параметр")
 	}
 
-	adminMsg := utils.CreateMsgWithTgUser(user, source)
+	msg := fmt.Sprintf("👋 Привет, %s! С вами скоро свяжется наш менеджер.", user.FirstName)
 
+	_, err := b.SendMessage(user.Id, msg, nil)
+	if err != nil {
+		return fmt.Errorf("failed to send message to user: %w", err)
+	}
+
+	adminMsg := utils.CreateMsgWithTgUser(user, source)
 	_, err = b.SendMessage(s.chatID, adminMsg, nil)
 	if err != nil {
 		return fmt.Errorf("failed to send message to admin: %w", err)
