@@ -11,11 +11,11 @@ func CreateServiceTgMsg(req request.ServiceReq) string {
 	}
 	return fmt.Sprintf(
 		"📋 Новая заявка!\n\n"+
+			"👤 Имя: %s\n"+
 			"🔹 Услуга: %s\n"+
 			"🔹 Тип: %s\n"+
-			"👤 Имя: %s\n"+
 			"📞 Телефон: %s",
-		req.Service, req.Type, req.Name, req.Phone,
+		req.Name, req.Service, req.Type, req.Phone,
 	)
 }
 
@@ -26,10 +26,10 @@ func CreateLayoutTgMsg(req request.Layout) string {
 
 	return fmt.Sprintf(
 		"📋 Новая заявка!\n\n"+
-			"🔹 Проект: %s\n"+
 			"👤 Имя: %s\n"+
+			"🔹 Проект: %s\n"+
 			"📞 Телефон: %s",
-		req.ProjectType, req.Name, req.Phone,
+		req.Name, req.ProjectType, req.Phone,
 	)
 }
 
@@ -40,11 +40,11 @@ func CreateCalcTgMsg(req request.Calc) string {
 
 	return fmt.Sprintf(
 		"📋 Новая заявка на рассчет стоимости!\n\n"+
+			"👤 Имя: %s\n"+
 			"🔹 Место: %s\n"+
 			"🔹 Площадь: %s\n"+
 			"🔹 Тип ремонта: %s\n"+
-			"👤 Имя: %s\n"+
 			"📞 Телефон: %s",
-		req.Place, req.Square, req.Type, req.Name, req.Phone,
+		req.Name, req.Place, req.Square, req.Type, req.Phone,
 	)
 }

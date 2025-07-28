@@ -53,12 +53,14 @@ func (h *handler) HandleServiceRequest(c *gin.Context) {
 func (h *handler) HandleLayoutRequest(c *gin.Context) {
 	var req request.Layout
 
-	if err := c.ShouldBindJSON(req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Неверный формат данных",
 		})
 		return
 	}
+
+	req.Validate(c)
 
 	msg := utils.CreateLayoutTgMsg(req)
 	if err := h.tgService.SendNotification(h.chatID, msg); err != nil {
@@ -77,12 +79,14 @@ func (h *handler) HandleLayoutRequest(c *gin.Context) {
 func (h *handler) HandleCalcRequest(c *gin.Context) {
 	var req request.Calc
 
-	if err := c.ShouldBindJSON(req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Неверный формат данных",
 		})
 		return
 	}
+
+	req.Validate(c)
 
 	msg := utils.CreateCalcTgMsg(req)
 	if err := h.tgService.SendNotification(h.chatID, msg); err != nil {
