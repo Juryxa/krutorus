@@ -40,6 +40,17 @@ func CreateCalcTgMsg(req request.Calc) string {
 		req.Name = "не указано"
 	}
 
+	if req.Place == "" || req.Place == " " {
+		return fmt.Sprintf(
+			"📋 Новая заявка на рассчет стоимости!\n\n"+
+				"👤 Имя: %s\n"+
+				"🔹 Площадь: %s\n"+
+				"🔹 Тип ремонта: %s\n"+
+				"📞 Телефон: %s",
+			req.Name, req.Square, req.Type, req.Phone,
+		)
+	}
+
 	return fmt.Sprintf(
 		"📋 Новая заявка на рассчет стоимости!\n\n"+
 			"👤 Имя: %s\n"+
