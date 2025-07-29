@@ -1,6 +1,7 @@
 'use client';
 import {useEffect, useState} from 'react';
 import styles from './PlanModal.module.css';
+import ModalService from "@/app/api/ModalPost";
 
 interface PlanModalProps {
     isOpen: boolean;
@@ -60,13 +61,23 @@ export default function PlanModal({
         setPhone(formatted);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!phone) return;
-        onSubmit({name, phone, projectType});
-        setName('');
-        setPhone('');
-        onClose();
+        try {
+            await ModalService.planPost(
+                projectType,
+                name,
+                phone
+            );
+
+            onSubmit({name, phone, projectType});
+            setName('');
+            setPhone('');
+            onClose();
+        } catch (error) {
+            console.error('Ошибка при отправке формы:', error);
+        }
     };
 
     if (!isOpen) return null;
@@ -81,7 +92,8 @@ export default function PlanModal({
 
     return (
         <section className={styles.planModalOverlay} onClick={onClose}>
-            <div className={`${styles.planModal} ${isMobile ? styles.mobileModal : ''}`} onClick={(e) => e.stopPropagation()}>
+            <div className={`${styles.planModal} ${isMobile ? styles.mobileModal : ''}`}
+                 onClick={(e) => e.stopPropagation()}>
                 <button className={styles.planCloseButton} onClick={onClose} aria-label="Закрыть">
                     &times;
                 </button>

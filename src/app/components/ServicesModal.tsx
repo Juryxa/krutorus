@@ -1,6 +1,7 @@
 'use client';
 import {useEffect, useState} from 'react';
 import styles from './ServicesModal.module.css';
+import ModalService from "@/app/api/ModalPost";
 
 interface ServicesModalProps {
     isOpen: boolean;
@@ -55,15 +56,28 @@ export default function ServicesModal({
         setPhone(formatted);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!phone) return;
-        onSubmit({name, phone});
-        setName('');
-        setPhone('');
-        onClose();
-    };
 
+        try {
+            // Отправляем данные
+            await ModalService.servicePost(
+                serviceCategory === 'repair' ? 'Ремонт' : 'Стройка',
+                serviceType,
+                name,
+                phone
+            );
+
+            // Вызываем колбэк родителя
+            onSubmit({name, phone});
+            setName('');
+            setPhone('');
+            onClose();
+        } catch (error) {
+            console.error('Ошибка при отправке формы:', error);
+        }
+    };
     if (!isOpen) return null;
 
     return (

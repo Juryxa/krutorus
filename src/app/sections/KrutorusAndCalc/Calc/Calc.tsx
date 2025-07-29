@@ -9,6 +9,7 @@ import {createPortal} from "react-dom";
 import arrowSig from 'public/arrowZig.png'
 import Head from "next/head";
 import stone from 'public/stones/stone1.png'
+import ModalService from "@/app/api/ModalPost";
 
 // Типы и данные для ремонта
 interface RepairCard {
@@ -236,7 +237,8 @@ export default function Calc() {
                         {isRepair && (
                             <div className={styles.gray}>
                                 <span>Где делаем ремонт?</span>
-                                <span className={styles.textRight}>{propertyType === 'new' ? '– Новостройка' : '– Вторичка'}</span>
+                                <span
+                                    className={styles.textRight}>{propertyType === 'new' ? '– Новостройка' : '– Вторичка'}</span>
                             </div>
                         )}
 
@@ -304,8 +306,32 @@ export default function Calc() {
                             type="submit"
                             className={styles.submitButton}
                             onClick={() => {
-                                if (serviceType === 'repair') setStep(5);
-                                if (serviceType === 'building') setStep(4);
+                                if (serviceType === 'repair') {
+                                    // Определяем место для ремонта
+                                    const place = propertyType === 'new' ? 'Новостройка' : 'Вторичка';
+
+                                    // Отправляем данные для ремонта
+                                    ModalService.caclPost({
+                                        place,
+                                        square: String(area as number),
+                                        type: repairType as string,
+                                        name,
+                                        phone
+                                    });
+                                    setStep(5);
+                                }
+                                if (serviceType === 'building') {
+                                    // Отправляем данные для строительства
+                                    ModalService.caclPost({
+                                            place: '',
+                                            square: String(area as number),
+                                            type: constructionType as string,
+                                            name,
+                                            phone
+                                        }
+                                    );
+                                    setStep(4);
+                                }
                             }}
                             disabled={phone.replace(/\D/g, '').length !== 11}
                         >
@@ -378,7 +404,8 @@ export default function Calc() {
                 {/* Шаг 1: Для ремонта - выбор типа недвижимости, для стройки - выбор площади */}
                 {step === 1 && serviceType === 'repair' && (
                     <div className={styles.stepContent}>
-                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери где будем ремонтировать!</h1>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери где будем
+                            ремонтировать!</h1>
                         <div className={styles.center1}>
                             <div
                                 className={styles.backOption}
@@ -729,8 +756,9 @@ export default function Calc() {
                 )}
             </section>
             <div className={styles.images}>
-                <Link href={'/'} className={styles.iconLink}><Image src={tg} alt="telegram" width={40}
-                                                                    height={40} priority/></Link>
+                <Link href={'https://t.me/BuildConsultBot?start=СераяКнопкаПодКалькулятором'}
+                      className={styles.iconLink}><Image src={tg} alt="telegram" width={40}
+                                                         height={40} priority/></Link>
                 <Link href={'/'} className={styles.iconLink}><Image src={mail} alt="email" width={40}
                                                                     height={40} priority/></Link>
             </div>
