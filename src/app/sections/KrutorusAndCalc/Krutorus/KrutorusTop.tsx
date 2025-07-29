@@ -15,7 +15,7 @@ function KrutorusTop() {
                 />
             </Head>
             <div className={styles.inner}>
-                <h1 className={styles.title}>Круторус</h1>
+                <h1 className={styles.title}>РемСтройПро</h1>
                 <ul className={styles.list}>
                     <li>—Реализуем проекты любой сложности: от косметического ремонта до капитального строительства.</li>
                     <li>—Работаем по прозрачным условиям, соблюдая сроки и бюджет.</li>

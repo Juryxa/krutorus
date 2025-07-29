@@ -37,7 +37,7 @@ function Nav({activeSection}: NavProps) {
     };
 
     const navItems = [
-        { id: 'krutorus', label: 'Круторус' },
+        { id: 'krutorus', label: 'РемСтройПро' },
         { id: 'calculator', label: 'Калькулятор' },
         { id: 'services', label: 'Услуги' },
         { id: 'plan', label: 'Разработка проектов' },

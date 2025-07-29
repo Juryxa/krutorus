@@ -1,7 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
-import {ICalcModal} from "@/app/api/ICalcModal";
-import {IPlanModal} from "@/app/api/IPlanModal";
-import {IServiceModal} from "@/app/api/IServiceModal";
+import {ICalcModal} from "@/app/api/ModalInterface/ICalcModal";
+import {IPlanModal} from "@/app/api/ModalInterface/IPlanModal";
+import {IServiceModal} from "@/app/api/ModalInterface/IServiceModal";
 
 const MODAL_URL = 'http://localhost:8080'
 

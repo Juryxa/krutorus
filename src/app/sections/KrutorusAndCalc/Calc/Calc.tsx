@@ -89,6 +89,7 @@ export default function Calc() {
     const [repairType, setRepairType] = useState<string | null>(null);
     const [repairTypeFor, setRepairTypeFor] = useState<string | null>(null);
     const [constructionType, setConstructionType] = useState<string | null>(null);
+    const [location, setLocation] = useState<'moscow' | 'moscow_region' | null>(null); // Новое состояние для местоположения
 
     // Состояния для модалки
     const [name, setName] = useState<string>('');
@@ -184,6 +185,7 @@ export default function Calc() {
             area,
             repairType,
             constructionType,
+            location, // Добавлено местоположение
             price: calculatePrice()
         });
 
@@ -195,9 +197,13 @@ export default function Calc() {
     // Обработка клавиши Escape
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && (step === 3 || step === 4)) {
-                if (serviceType === 'building') setStep(2);
-                if (serviceType === 'repair') setStep(3);
+            if (e.key === 'Escape') {
+                if (serviceType === 'repair' && step === 4) setStep(3);
+                if (serviceType === 'building') {
+                    if (step === 4) setStep(3); // Модалка -> выбор вида строительства
+                    if (step === 3) setStep(2); // Вид строительства -> площадь
+                    if (step === 2) setStep(1); // Площадь -> местоположение
+                }
             }
         };
 
@@ -216,15 +222,15 @@ export default function Calc() {
 
         return (
             <div className={styles.modalOverlay} onClick={() => {
-                if (serviceType === 'building') setStep(2);
                 if (serviceType === 'repair') setStep(3);
+                if (serviceType === 'building') setStep(3);
             }}>
                 <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                     <button
                         className={styles.closeButton}
                         onClick={() => {
-                            if (serviceType === 'building') setStep(2);
                             if (serviceType === 'repair') setStep(3);
+                            if (serviceType === 'building') setStep(3);
                         }}
                         aria-label="Закрыть"
                     >
@@ -239,6 +245,15 @@ export default function Calc() {
                                 <span>Где делаем ремонт?</span>
                                 <span
                                     className={styles.textRight}>{propertyType === 'new' ? '– Новостройка' : '– Вторичка'}</span>
+                            </div>
+                        )}
+
+                        {isBuilding && (
+                            <div className={styles.gray}>
+                                <span>Место строительства</span>
+                                <span className={styles.textRight}>
+                                    – {location === 'moscow' ? 'Москва' : 'Московская область'}
+                                </span>
                             </div>
                         )}
 
@@ -323,14 +338,14 @@ export default function Calc() {
                                 if (serviceType === 'building') {
                                     // Отправляем данные для строительства
                                     ModalService.caclPost({
-                                            place: '',
+                                            place: location === 'moscow' ? 'Москва' : 'Московская область',
                                             square: String(area as number),
                                             type: constructionType as string,
                                             name,
                                             phone
                                         }
                                     );
-                                    setStep(4);
+                                    setStep(5);
                                 }
                             }}
                             disabled={phone.replace(/\D/g, '').length !== 11}
@@ -351,6 +366,7 @@ export default function Calc() {
         setArea(null);
         setRepairType(null);
         setConstructionType(null);
+        setLocation(null); // Сброс местоположения
         setName('');
         setPhone('');
     };
@@ -401,7 +417,7 @@ export default function Calc() {
                     </div>
                 )}
 
-                {/* Шаг 1: Для ремонта - выбор типа недвижимости, для стройки - выбор площади */}
+                {/* Шаг 1: Для ремонта - выбор типа недвижимости */}
                 {step === 1 && serviceType === 'repair' && (
                     <div className={styles.stepContent}>
                         <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери где будем
@@ -440,10 +456,10 @@ export default function Calc() {
                     </div>
                 )}
 
-                {/* Шаг 1: Для стройки - сразу выбор площади */}
+                {/* Шаг 1: Для стройки - выбор местоположения */}
                 {step === 1 && serviceType === 'building' && (
                     <div className={styles.stepContent}>
-                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери площадь</h1>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери место строительства</h1>
                         <div className={styles.center1}>
                             <div
                                 className={styles.backOption}
@@ -453,55 +469,25 @@ export default function Calc() {
                                 <span className={styles.optionText}>Стройка</span>
                             </div>
 
-                            <div className={styles.areaSelection}>
-                                <h3 className={styles.sectionTitle}>Площадь (м²):</h3>
-                                <div className={styles.areaButtons}>
-                                    {[50, 70].map((size) => (
-                                        <button
-                                            key={size}
-                                            className={`${styles.areaButton} ${area === size ? styles.selected : ''}`}
-                                            onClick={() => {
-                                                setArea(size);
-                                                setStep(2);
-                                            }}
-                                        >
-                                            от {size}
-                                        </button>
-                                    ))}
-                                    <button
-                                        className={`${styles.areaButton} ${area && area >= 100 ? styles.selected : ''}`}
-                                        onClick={() => {
-                                            setArea(areaCustom);
-                                        }}
-                                    >
-                                        свыше 100
-                                    </button>
-                                </div>
-
-                                {area && area >= 100 && (
-                                    <div className={styles.customArea}>
-                                        <input
-                                            type="range"
-                                            min="100"
-                                            max="300"
-                                            value={areaCustom}
-                                            onChange={(e) => {
-                                                const value = parseInt(e.target.value);
-                                                setAreaCustom(value);
-                                                setArea(value);
-                                            }}
-                                        />
-                                        <div className={styles.areaValue}>
-                                            {areaCustom} м²
-                                            <button
-                                                className={styles.confirmButton}
-                                                onClick={() => setStep(2)}
-                                            >
-                                                Подтвердить
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
+                            <div className={styles.buttonGroup}>
+                                <button
+                                    className={`${styles.newBuilding} ${location === 'moscow' ? styles.selected : ''}`}
+                                    onClick={() => {
+                                        setLocation('moscow');
+                                        setStep(2);
+                                    }}
+                                >
+                                    Москва
+                                </button>
+                                <button
+                                    className={`${styles.secondary} ${location === 'moscow_region' ? styles.selected : ''}`}
+                                    onClick={() => {
+                                        setLocation('moscow_region');
+                                        setStep(2);
+                                    }}
+                                >
+                                    Московская область
+                                </button>
                             </div>
                         </div>
                         <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
@@ -587,10 +573,10 @@ export default function Calc() {
                     </div>
                 )}
 
-                {/* Шаг 2: Для стройки - выбор вида строительства */}
+                {/* Шаг 2: Для стройки - выбор площади */}
                 {step === 2 && serviceType === 'building' && (
                     <div className={styles.stepContent}>
-                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери вид строительства</h1>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Выбери площадь</h1>
                         <div className={styles.center1}>
                             <div className={styles.selectedOptions}>
                                 <div
@@ -605,26 +591,61 @@ export default function Calc() {
                                     onClick={() => setStep(1)}
                                 >
                                     <span className={styles.square}></span>
-                                    <span className={styles.optionText}>{area} м²</span>
+                                    <span className={styles.optionText}>
+                                        {location === 'moscow' ? 'Москва' : 'Московская область'}
+                                    </span>
                                 </div>
                             </div>
 
-                            <div className={styles.repairSelection}>
-                                <h3 className={styles.sectionTitle}>Вид строительства:</h3>
-                                <div className={styles.repairOptions}>
-                                    {constructionCards.map((card) => (
-                                        <div
-                                            key={card.title}
-                                            className={`${styles.repairOption} ${constructionType === card.title ? styles.selected : ''}`}
+                            <div className={styles.areaSelection}>
+                                <h3 className={styles.sectionTitle}>Площадь (м²):</h3>
+                                <div className={styles.areaButtons}>
+                                    {[50, 70].map((size) => (
+                                        <button
+                                            key={size}
+                                            className={`${styles.areaButton} ${area === size ? styles.selected : ''}`}
                                             onClick={() => {
-                                                setConstructionType(card.title);
+                                                setArea(size);
                                                 setStep(3);
                                             }}
                                         >
-                                            <div className={styles.constructionTitle}>{card.title}</div>
-                                        </div>
+                                            от {size}
+                                        </button>
                                     ))}
+                                    <button
+                                        className={`${styles.areaButton} ${area && area >= 100 ? styles.selected : ''}`}
+                                        onClick={() => {
+                                            setArea(areaCustom);
+                                        }}
+                                    >
+                                        свыше 100
+                                    </button>
                                 </div>
+
+                                {area && area >= 100 && (
+                                    <div className={styles.customArea}>
+                                        <input
+                                            type="range"
+                                            min="100"
+                                            max="300"
+                                            value={areaCustom}
+                                            onChange={(e) => {
+                                                const value = parseInt(e.target.value);
+                                                setAreaCustom(value);
+                                                setArea(value);
+                                            }}
+                                        />
+                                        <div className={styles.areaValue}>
+                                            {areaCustom} м²
+                                            <button
+                                                className={styles.confirmButton}
+                                                onClick={() => setStep(3)}
+                                            >
+                                                Подтвердить
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
@@ -685,18 +706,74 @@ export default function Calc() {
                     </div>
                 )}
 
+                {/* Шаг 3: Для стройки - выбор вида строительства */}
+                {step === 3 && serviceType === 'building' && (
+                    <div className={styles.stepContent}>
+                        <h1 className={styles.title1}>Рассчитай стоимость за 3 шага — Это последний шаг!</h1>
+                        <div className={styles.center1}>
+                            <div className={styles.selectedOptions}>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(0)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>Стройка</span>
+                                </div>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(1)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>
+                                        {location === 'moscow' ? 'Москва' : 'Московская область'}
+                                    </span>
+                                </div>
+                                <div
+                                    className={styles.backOption}
+                                    onClick={() => setStep(2)}
+                                >
+                                    <span className={styles.square}></span>
+                                    <span className={styles.optionText}>{area} м²</span>
+                                </div>
+                            </div>
+
+                            <div className={styles.repairSelection}>
+                                <h3 className={styles.sectionTitle}>Вид строительства:</h3>
+                                <div className={styles.repairOptions}>
+                                    {constructionCards.map((card) => (
+                                        <div
+                                            key={card.title}
+                                            className={`${styles.repairOption} ${constructionType === card.title ? styles.selected : ''}`}
+                                            onClick={() => {
+                                                setConstructionType(card.title);
+                                                setStep(4);
+                                            }}
+                                        >
+                                            <div className={styles.constructionTitle}>{card.title}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <p className={styles.footer}>Заполните за 30 секунд — без регистрации и звонков</p>
+                    </div>
+                )}
+
                 {/* Модалка с результатом */}
                 {(step === 4 && serviceType === 'repair') ||
-                (step === 3 && serviceType === 'building') ?
+                (step === 4 && serviceType === 'building') ?
                     createPortal(renderModal(), document.body) : null}
 
-                {/* Итоговый шаг для ремонта */}
-                {step === 5 && serviceType === 'repair' && (
+                {/* Итоговый шаг */}
+                {step === 5 && (
                     <div className={styles.stepContent4}>
                         <h1 className={styles.title1}>Можем сделать это ещё раз!</h1>
                         <div className={styles.center4}>
                             <div className={styles.result}>
-                                Готово! Итоговая стоимость вашего ремонта
+                                {serviceType === 'repair'
+                                    ? "Готово! Итоговая стоимость вашего ремонта"
+                                    : `Готово! Итоговая стоимость вашего строительства в ${location === 'moscow' ? 'Москве' : 'Московской области'}`
+                                }
                             </div>
                             <Image
                                 src={arrowSig}
@@ -714,35 +791,6 @@ export default function Calc() {
                             >
                                 Рассчитать снова
                             </button>
-                        </div>
-                        <Image
-                            width={150}
-                            height={100}
-                            src={stone}
-                            alt="stone"
-                            className={`${styles.fallingStone} ${styles.animateStone}`}
-                            priority
-                        />
-                    </div>
-                )}
-
-                {/* Итоговый шаг для строительства */}
-                {step === 4 && serviceType === 'building' && (
-                    <div className={styles.stepContent4}>
-                        <h1 className={styles.title1}>Можем сделать это ещё раз!</h1>
-                        <div className={styles.center4}>
-                            <div className={styles.result}>
-                                Готово! Итоговая стоимость вашего строительства
-                            </div>
-                            <Image
-                                src={arrowSig}
-                                alt={'arrow'}
-                                className={styles.arrow}
-                                priority
-                            />
-                            <div className={`${styles.backOption} ${styles.cursor}`}>
-                                Для Вас: ~ {formatPrice(Math.round(calculatePrice() * 0.9))}
-                            </div>
                         </div>
                         <Image
                             width={150}
