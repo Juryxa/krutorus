@@ -7,7 +7,7 @@ function KrutorusAndCalc() {
     return (
         <section className={styles.main}>
             <Krutorus/>
-            <Calc/>
+            <section id='calculator'><Calc/></section>
         </section>
     );
 }

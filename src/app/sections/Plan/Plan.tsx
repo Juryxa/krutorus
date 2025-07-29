@@ -13,7 +13,14 @@ function Plan() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const animationPlayed = useRef(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const handleFormSubmit = (data: { name: string; phone: string; projectType: string }) => {
         setModalIsOpen(false);

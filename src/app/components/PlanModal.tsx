@@ -1,6 +1,7 @@
 'use client';
 import {useEffect, useState} from 'react';
 import styles from './PlanModal.module.css';
+import ModalService from "@/app/api/ModalPost";
 
 interface PlanModalProps {
     isOpen: boolean;
@@ -16,6 +17,14 @@ export default function PlanModal({
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [projectType, setProjectType] = useState('Общая консультация');
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
@@ -52,13 +61,23 @@ export default function PlanModal({
         setPhone(formatted);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!phone) return;
-        onSubmit({name, phone, projectType});
-        setName('');
-        setPhone('');
-        onClose();
+        try {
+            await ModalService.planPost(
+                projectType,
+                name,
+                phone
+            );
+
+            onSubmit({name, phone, projectType});
+            setName('');
+            setPhone('');
+            onClose();
+        } catch (error) {
+            console.error('Ошибка при отправке формы:', error);
+        }
     };
 
     if (!isOpen) return null;
@@ -73,18 +92,19 @@ export default function PlanModal({
 
     return (
         <section className={styles.planModalOverlay} onClick={onClose}>
-            <div className={styles.planModal} onClick={(e) => e.stopPropagation()}>
-                    <button className={styles.planCloseButton} onClick={onClose} aria-label="Закрыть">
-                        &times;
-                    </button>
+            <div className={`${styles.planModal} ${isMobile ? styles.mobileModal : ''}`}
+                 onClick={(e) => e.stopPropagation()}>
+                <button className={styles.planCloseButton} onClick={onClose} aria-label="Закрыть">
+                    &times;
+                </button>
 
-                    <h2 className={styles.planModalTitle}>Заказать консультацию</h2>
+                <h2 className={styles.planModalTitle}>Заказать консультацию</h2>
 
                 <form onSubmit={handleSubmit} className={styles.planModalForm}>
                     <div className={styles.planModalInputs}>
                         <div className={styles.planFormGroup}>
                             <div className={styles.planGray}>
-                                <label className={styles.planFormLabel}>Выбор услуги проекта:</label>
+                                <label className={styles.planFormLabel}>Услуга:</label>
                                 <select
                                     value={projectType}
                                     onChange={(e) => setProjectType(e.target.value)}
