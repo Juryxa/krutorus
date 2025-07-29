@@ -2,11 +2,16 @@ module baulin_proj
 
 go 1.23.2
 
-require github.com/gin-gonic/gin v1.10.1
+require (
+	github.com/bregydoc/gtranslate v0.0.0-20200913051839-1bd07f6c1fc5
+	github.com/gin-gonic/gin v1.10.1
+)
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/kr/text v0.1.0 // indirect
+	github.com/robertkrimen/otto v0.5.1 // indirect
+	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
 

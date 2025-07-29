@@ -7,6 +7,13 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
 )
 
+var Dicronary = map[string]string{
+	"BlueMain":      "Синяя кнопка на главной",
+	"Orange":        "Оранжевая кнопка",
+	"GrayUnderCalc": "Серая кнопка под калькулятором",
+	"FooterButton":  "Кнопка из подвала",
+}
+
 func CreateServiceTgMsg(req request.ServiceReq) string {
 	if req.Name == "" || req.Name == " " {
 		req.Name = "не указано"
