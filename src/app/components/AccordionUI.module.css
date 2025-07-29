@@ -78,6 +78,9 @@
 }
 
 @media (max-width: 480px) {
+    .accordion {
+        width: 100%;
+    }
     .block {
         padding: 8px 15px;
     }
