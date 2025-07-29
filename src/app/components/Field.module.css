@@ -24,6 +24,18 @@
 .gray{
     background-color: #9C9C9C;
 }
+.orangeTop{
+    background-color: #F4871A;
+    position: relative;
+    z-index: 5;
+    box-shadow: 0 0 9px rgb(255, 138, 22);
+}
+.orangeTop:hover{
+    scale: 1.04;
+}
+.orangeTop:active{
+    scale: 0.98;
+}
 .transparentOrange{
     border: 2px solid #F4871A;
     padding: 20px 40px;

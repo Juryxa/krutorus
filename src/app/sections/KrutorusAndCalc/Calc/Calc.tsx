@@ -807,7 +807,7 @@ export default function Calc() {
                 <Link href={'https://t.me/BuildConsultBot?start=СераяКнопкаПодКалькулятором'}
                       className={styles.iconLink}><Image src={tg} alt="telegram" width={40}
                                                          height={40} priority/></Link>
-                <Link href={'/'} className={styles.iconLink}><Image src={mail} alt="email" width={40}
+                <Link href={'mailto:remstroiipro@gmail.com'} className={styles.iconLink}><Image src={mail} alt="email" width={40}
                                                                     height={40} priority/></Link>
             </div>
         </section>

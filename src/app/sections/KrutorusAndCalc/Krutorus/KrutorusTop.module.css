@@ -32,29 +32,23 @@
 }
 
 .fields {
-    overflow-x: auto;
-    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     padding-bottom: 20px;
-    scrollbar-width: thin;
-    scrollbar-color: #888 transparent;
-    -webkit-overflow-scrolling: touch;
 }
 
-.fields::-webkit-scrollbar {
-    height: 5px;
+.row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
 }
 
-.fields::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.fields::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
-
-.fields::-webkit-scrollbar-thumb:hover {
-    background: #555;
+.anchorLink {
+    text-decoration: none;
+    z-index: 4;
+    position: relative;
 }
 
 .title {
@@ -86,27 +80,66 @@
     width: 100%;
 }
 
-.repair,
-.building,
-.projectsDev {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 10px 20px 5px 0;
-
+/* Бегущая строка для первых двух строк */
+.marquee {
+    overflow: hidden;
+    position: relative;
+    flex-grow: 1;
 }
 
+.marqueeContent {
+    display: inline-flex;
+    gap: 10px;
+    animation: marquee 15s linear infinite;
+    will-change: transform;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Эффект блеска для третьей строки */
+.shineContainer {
+    position: relative;
+    display: inline-flex;
+    gap: 10px;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.staticFields {
+    display: inline-flex;
+    overflow: auto;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 100%
+    );
+    z-index: 3;
+    animation: shine 3s forwards;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
 
 @media (max-width: 768px) {
     .fields {
         padding-bottom: 15px;
-    }
-
-    .repair,
-    .building,
-    .projectsDev {
-        width: 100%;
-        margin-right: 0;
     }
 }
 
@@ -139,6 +172,15 @@
         font-size: 16px;
         line-height: 24px;
         margin-bottom: 20px;
+    }
+
+    .row {
+        flex-wrap: wrap;
+    }
+
+    .marquee {
+        width: 100%;
+        margin-top: 10px;
     }
 }
 
@@ -184,9 +226,5 @@
         font-size: 13px;
         line-height: 18px;
         margin-bottom: 12px;
-    }
-
-    .fields {
-        gap: 8px;
     }
 }

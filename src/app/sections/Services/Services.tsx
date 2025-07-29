@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useInView} from 'react-intersection-observer';
 import styles from './Services.module.css';
 import ServiceButton from '@/app/components/ServiceButton';
@@ -21,6 +21,10 @@ export default function Services() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedServiceType, setSelectedServiceType] = useState('');
     const [isMobile, setIsMobile] = useState(false);
+
+    // Refs для отслеживания позиций касания
+    const touchStartRef = useRef({x: 0, y: 0});
+    const touchEndRef = useRef({x: 0, y: 0});
 
     // Определение мобильных устройств
     useEffect(() => {
@@ -91,14 +95,16 @@ export default function Services() {
         {
             title: 'Установка заборов',
             description: '—Профнастил от 14990 ₽/п.м\n' +
+                '                —Сетка-рабица от 490₽/п.м\n' +
                 '                —3D-секции от 1290₽/п.м\n' +
-                '                —Деревянный / евроштакетник от 1390₽/п.м\n' + '\n' +'Монтаж заборов любых типов: от профнастила до кирпича. Подчеркнёт границы участка и обеспечит безопасность — с учётом вашего стиля и бюджета.',
+                '                —Деревянный / евроштакетник от 1390₽/п.м\n' + '\n' + 'Монтаж заборов любых типов: от профнастила до кирпича. Подчеркнёт границы участка и обеспечит безопасность — с учётом вашего стиля и бюджета.',
             price: 'Сетка-рабица от 490₽/п.м'
 
         },
         {
             title: 'Сварочные работы',
-            description: 'Профессиональная сварка конструкций любой сложности. Незаменимо, если нужно прочное и точное решение для дома, дачи или бизнеса.',
+            description: '—По шву/стыку (трубы, ограждения) от 150\n' +
+                'от 600  ₽/п.м\n' + '\n' + 'Профессиональная сварка конструкций любой сложности. Незаменимо, если нужно прочное и точное решение для дома, дачи или бизнеса.',
             price: 'По шву/стыку (трубы, ограждения) от 150\n' +
                 'до 600  ₽/п.м'
         },
@@ -156,6 +162,36 @@ export default function Services() {
         changeBackground();
     }, [currentSlide]);
 
+    // Обработчики для свайпов
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartRef.current = {
+            x: e.touches[0].clientX,
+            y: e.touches[0].clientY
+        };
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        touchEndRef.current = {
+            x: e.touches[0].clientX,
+            y: e.touches[0].clientY
+        };
+    };
+
+    const handleTouchEnd = () => {
+        // Рассчитываем разницу перемещения
+        const diffX = touchEndRef.current.x - touchStartRef.current.x;
+        const diffY = touchEndRef.current.y - touchStartRef.current.y;
+
+        // Проверяем, что движение в основном горизонтальное
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                prevSlide(); // Свайп вправо -> предыдущий слайд
+            } else {
+                nextSlide(); // Свайп влево -> следующий слайд
+            }
+        }
+    };
+
     // Округление цены для вторички
     const getPrice = (price: number | string, title: string) => {
         if (typeof price === 'string') {
@@ -205,7 +241,7 @@ export default function Services() {
                 <h2 className={styles.title}>Услуги</h2>
                 <ServiceButton setActiveTab={setActiveTab}/>
 
-                <div style={{ minHeight: '60px' }}>
+                <div style={{minHeight: '60px'}}>
                     {activeTab === 'repair' && (
                         <BuildingTypeButton setBuildingType={setBuildingType}/>
                     )}
@@ -220,11 +256,14 @@ export default function Services() {
             <div className={`${styles.carouselContainer} ${inView ? styles.animate : ''}`} ref={ref}>
                 {!isMobile && (
                     <>
-                        <Image src={getImagePath(`/stones/stone1.png`)} alt="Stone" width={161} height={129} loading="lazy"
+                        <Image src={getImagePath(`/stones/stone1.png`)} alt="Stone" width={161} height={129}
+                               loading="lazy"
                                className={styles.stone1}/>
-                        <Image src={getImagePath(`/stones/stone2.png`)} alt="Stone" width={173} height={152} loading="lazy"
+                        <Image src={getImagePath(`/stones/stone2.png`)} alt="Stone" width={173} height={152}
+                               loading="lazy"
                                className={styles.stone2}/>
-                        <Image src={getImagePath(`/stones/stone3.png`)} alt="Stone" width={300} height={450} loading="lazy"
+                        <Image src={getImagePath(`/stones/stone3.png`)} alt="Stone" width={300} height={450}
+                               loading="lazy"
                                className={styles.stone3}/>
                     </>
                 )}
@@ -278,8 +317,13 @@ export default function Services() {
                             ←
                         </button>
 
-                        <div className={styles.mobileCardWrapper}>
-                            <div className={`${styles.card} ${styles.mobileActive}`} style={{ width: '85%' }}>
+                        <div
+                            className={styles.mobileCardWrapper}
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={handleTouchEnd}
+                        >
+                            <div className={`${styles.card} ${styles.mobileActive}`} style={{width: '85%'}}>
                                 <div className={styles.cardContent}
                                      style={typeof cards[currentSlide].price === "string" ? {overflowY: 'auto'} : {}}>
                                     <div className={styles.titlePrice}>

@@ -10,8 +10,7 @@
 .howWork:before {
     content: "";
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("/HowWorkBg.webp") no-repeat center center fixed; /* fixed позиционирование */
-    background-size: cover;
+    url("/HowWorkBg.webp") no-repeat center center / cover;
     position: absolute;
     top: 0;
     right: 0;
@@ -26,6 +25,7 @@
     top: 0;
     left: 0;
     right: 0;
+    will-change: transform;
     bottom: 0;
     background: linear-gradient(180deg, #242223, transparent);
     z-index: -1;
@@ -54,12 +54,19 @@
     font-size: 18px;
     text-align: center;
 }
+
+@media (min-width: 1001px) {
+    .howWork:before {
+        background-attachment: fixed; /* Фиксируем только на больших экранах */
+    }
+}
 @media screen and (max-width: 1000px) {
     .title{
         font-size: 2rem;
+        text-align: center;
     }
     .text{
-        width: 60%;
+        width: 100%;
         font-size: 16px;
     }
     .fields{
@@ -67,3 +74,8 @@
     }
 }
 
+@supports (-webkit-touch-callout: none) {
+    .howWork:before {
+        background-attachment: scroll;
+    }
+}
