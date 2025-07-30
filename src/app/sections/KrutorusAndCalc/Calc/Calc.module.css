@@ -208,7 +208,7 @@
 .discount {
     color: white;
     text-align: center;
-    font-size: 15px;
+    font-size: 28px;
     margin: 10px 0;
 }
 .underline{
@@ -433,7 +433,6 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    width: 90%;
     max-width: 500px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
     animation: slideUp 0.4s ease;
@@ -829,7 +828,7 @@
     }
 
     .discount {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .backOption {
@@ -877,7 +876,7 @@
     }
 
     .discount {
-        font-size: 18px;
+        font-size: 22px;
     }
 
     .footer {
@@ -914,7 +913,7 @@
 
     .center, .center1 {
         margin-top: 0;
-        justify-content: flex-start;
+        justify-content: center;
     }
 
     .footer {
@@ -1012,7 +1011,7 @@
     }
 
     .fallingStone {
-        width: 80px;
+        width: 140px;
     }
 
     .center4 .backOption {
@@ -1039,7 +1038,7 @@
     }
 
     .discount {
-        font-size: 13px;
+        font-size: 15px;
     }
 
     .footer {

@@ -22,7 +22,7 @@ function KrutorusBottom() {
                     <div className={styles.fieldsOpacity}>
                         <Field className={'transparentOrange'}>Есть вопросы или нужна помощь с выбором услуги?</Field>
                         <Field className={'transparentGray'}>- Да, хочу уточнить пару моментов.<br/>
-                            <Link className={styles.link} href="/">📲<span className={styles.linkDecoration}>Пишите в Telegram — ответим быстро!</span></Link>
+                            <Link className={styles.link} href="https://t.me/BuildConsultBot?start=Line">📲<span className={styles.linkDecoration}>Пишите в Telegram — ответим быстро!</span></Link>
                         </Field>
                     </div>
                     <Image className={styles.arrowLeft} src={arrowLeft} alt='arrow'/>

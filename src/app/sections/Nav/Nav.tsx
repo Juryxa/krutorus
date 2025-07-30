@@ -10,6 +10,7 @@ interface NavProps {
 function Nav({activeSection}: NavProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [isMounted, setIsMounted] = useState(false); // Добавим флаг монтирования
 
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
@@ -20,6 +21,7 @@ function Nav({activeSection}: NavProps) {
     };
 
     useEffect(() => {
+        setIsMounted(true); // Компонент смонтирован
         const handleResize = () => {
             setIsMobile(window.innerWidth < 700);
             if (window.innerWidth >= 700) {
@@ -27,6 +29,7 @@ function Nav({activeSection}: NavProps) {
             }
         };
 
+        // Проверяем размер сразу при монтировании
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -37,13 +40,22 @@ function Nav({activeSection}: NavProps) {
     };
 
     const navItems = [
-        { id: 'krutorus', label: 'РемСтройПро' },
-        { id: 'calculator', label: 'Калькулятор' },
-        { id: 'services', label: 'Услуги' },
-        { id: 'plan', label: 'Разработка проектов' },
-        { id: 'howwework', label: 'Условия работы' },
-        { id: 'aboutus', label: 'О нас' }
+        {id: 'krutorus', label: 'РемСтройПро'},
+        {id: 'calculator', label: 'Калькулятор'},
+        {id: 'services', label: 'Услуги'},
+        {id: 'plan', label: 'Разработка проектов'},
+        {id: 'howwework', label: 'Условия работы'},
+        {id: 'aboutus', label: 'О нас'}
     ];
+
+    // На сервере и до первого рендера на клиенте не рендерим кнопки
+    if (!isMounted) {
+        return (
+            <nav className={`${styles.nav} ${styles.skeleton}`}>
+                <div className={styles.hamburgerSkeleton}></div>
+            </nav>
+        );
+    }
 
     return (
         <nav className={`${styles.nav} ${isMobile ? styles.mobileNav : ''}`}>
@@ -57,13 +69,13 @@ function Nav({activeSection}: NavProps) {
                         </div>
                         <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.open : ''}`}>
                             {navItems.map(item => (
-                                <Button
+                                    <Button
                                     key={item.id}
                                     pressed={activeSection === item.id}
                                     onClick={() => scrollToSection(item.id)}
                                 >
                                     {item.label}
-                                </Button>
+                                    </Button>
                             ))}
                         </div>
                     </>
