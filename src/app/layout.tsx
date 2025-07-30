@@ -18,19 +18,19 @@ export const metadata: Metadata = {
         "строительство складов",
         "онлайн калькулятор ремонта",
     ],
-    authors: [{ name: "РемСтройПрофи", url: "https://ваш-сайт.ru" }],
-    metadataBase: new URL("https://ваш-сайт.ru"), // Замените на реальный домен
+    authors: [{ name: "РемСтройПрофи", url: "https://remstroiipro.ru" }],
+    metadataBase: new URL("https://remstroiipro.ru"), // Замените на реальный домен
 
     // Open Graph
     openGraph: {
         title: "РемСтройПро",
         description:
             "Ремонт и строительство под ключ: квартиры, дома, складские помещения. Онлайн-калькулятор, прозрачные цены, скидка 15% на первый замер!",
-        url: "https://ваш-сайт.ru",
+        url: "https://remstroiipro.ru",
         siteName: "РемСтройПро",
         images: [
             {
-                url: "/og-image.png", // Путь к OG-изображению в public/
+                url: "https://remstroiipro.ru/og-image.png", // Путь к OG-изображению в public/
                 width: 1200,
                 height: 900,
                 alt: "Ремонт квартир и строительство от РемСтройПро",

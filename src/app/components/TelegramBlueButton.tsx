@@ -6,7 +6,7 @@ import Link from "next/link";
 
 function TelegramBlueButton() {
     return (
-        <Link href="https://t.me/BuildConsultBot?start=СиняяКнопкаНаГлавной">
+        <Link href="https://t.me/BuildConsultBot?start=BlueMain">
             <div className={styles.button}>
                 Telegram
                 <Image src={tgBlueSvg} alt={'tg'}/>

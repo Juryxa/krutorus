@@ -3,7 +3,7 @@ import {ICalcModal} from "@/app/api/ModalInterface/ICalcModal";
 import {IPlanModal} from "@/app/api/ModalInterface/IPlanModal";
 import {IServiceModal} from "@/app/api/ModalInterface/IServiceModal";
 
-const MODAL_URL = 'http://localhost:8080'
+const MODAL_URL = '/api'
 
 export const createApiInstance = (
     baseURL: string,

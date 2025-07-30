@@ -91,7 +91,7 @@ export default function TgOrange() {
                 )}
             </div>
 
-            <Link href="https://t.me/BuildConsultBot?start=ОранжеваяКнопка" className={styles.button}>
+            <Link href="https://t.me/BuildConsultBot?start=Orange" className={styles.button}>
                 <Image
                     className={styles.tgImage}
                     src={tgForOrange}
