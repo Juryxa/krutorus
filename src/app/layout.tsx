@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         siteName: "РемСтройПро",
         images: [
             {
-                url: "https://remstroiipro.ru/public/og-image.png", // Путь к OG-изображению в public/
+                url: "https://remstroiipro.ru/og-image.png", // Путь к OG-изображению в public/
                 width: 1200,
                 height: 900,
                 alt: "Ремонт квартир и строительство от РемСтройПро",
